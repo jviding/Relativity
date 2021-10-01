@@ -1,10 +1,13 @@
-'use strict'
 import React from 'react'
 import style from './test.module.scss'
 
-export default class Test extends React.Component {
+interface TestProps {
+    some: string
+}
 
-    constructor(props) {
+export default class Test extends React.Component <TestProps, {}> {
+
+    constructor(props: TestProps) {
         super(props)
         this.state = {}
     }
@@ -12,7 +15,7 @@ export default class Test extends React.Component {
     render() {
         return (
             <div className={style.x}>
-                World!
+                {this.props.some}
             </div>
         )
     }

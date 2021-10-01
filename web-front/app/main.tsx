@@ -1,20 +1,28 @@
-'use strict'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-//import style from "./main.module.scss"
-//import Test from './test/test.jsx'
+import { InferProps } from 'prop-types'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import style from "./main.module.scss"
+import Test from './test/test'
 
-class Main extends React.Component <{}> {
+interface IProps {}
+interface IState {
+    test: string
+}
+
+class Main extends React.Component <IProps, IState> {
     
-    /*constructor(props) {
+    constructor(props: IProps) {
         super(props)
-        this.state = {}
-    }*/
+        this.state = {
+            test: 'Hello, '
+        }
+    }
 
     render() {
         return (
             <div>
-                <div>Hello,</div>
+                <div className={style.x}>{this.state.test}</div>
+                <Test some="World!" />
             </div>
         )
     }

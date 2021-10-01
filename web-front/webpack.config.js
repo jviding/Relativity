@@ -6,6 +6,9 @@ module.exports = {
         path.resolve(__dirname, './app/main.tsx'),
         path.resolve(__dirname, './app/style.scss')
     ],
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss']
+    },
     module: {
         rules: [
             {
