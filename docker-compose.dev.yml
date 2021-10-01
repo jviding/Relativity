@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+
+  data-collectors-currencies:
+    build:
+      context: ./data-collectors/currencies
+      dockerfile: dev.Dockerfile
+    restart: always
+    volumes: 
+      - ./data-collectors/currencies:/scripts
+    command: sleep 3600
