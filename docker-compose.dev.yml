@@ -2,11 +2,49 @@ version: '3.8'
 
 services:
 
-  data-collectors-currencies:
+  # FRONT
+  # TODO...
+
+  # API
+  # TODO...
+
+  # DATABASE
+  # TODO...
+
+  # DATA COLLECTORS
+
+  bonds:
+    build:
+      context: ./data-collectors/bonds
+      dockerfile: dev.Dockerfile
+    restart: always
+    volumes: 
+      - ./data-collectors/bonds:/scripts
+    command: sleep 3600
+
+  commodities:
+    build:
+      context: ./data-collectors/commodities
+      dockerfile: dev.Dockerfile
+    restart: always
+    volumes: 
+      - ./data-collectors/commodities:/scripts
+    command: sleep 3600
+
+  currencies:
     build:
       context: ./data-collectors/currencies
       dockerfile: dev.Dockerfile
     restart: always
     volumes: 
       - ./data-collectors/currencies:/scripts
+    command: sleep 3600
+
+  indexes:
+    build:
+      context: ./data-collectors/indexes
+      dockerfile: dev.Dockerfile
+    restart: always
+    volumes:
+      - ./data-collectors/indexes:/scripts
     command: sleep 3600
