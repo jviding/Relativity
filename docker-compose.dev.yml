@@ -3,7 +3,18 @@ version: '3.8'
 services:
 
   # FRONT
-  # TODO...
+  
+  front:
+    build:
+      context: ./web-front
+      dockerfile: dev.Dockerfile
+    restart: always
+    volumes: 
+      - ./web-front:/app
+    ports:
+      - "8080:8080"
+    working_dir: /app
+    command: sleep 3600 #npm start
 
   # API
   # TODO...
@@ -20,7 +31,7 @@ services:
     restart: always
     volumes: 
       - ./data-collectors/bonds:/scripts
-    command: sleep 3600
+    command: sleep 36000
 
   commodities:
     build:
@@ -29,7 +40,7 @@ services:
     restart: always
     volumes: 
       - ./data-collectors/commodities:/scripts
-    command: sleep 3600
+    command: sleep 36000
 
   currencies:
     build:
@@ -38,7 +49,7 @@ services:
     restart: always
     volumes: 
       - ./data-collectors/currencies:/scripts
-    command: sleep 3600
+    command: sleep 36000
 
   indexes:
     build:
@@ -47,4 +58,4 @@ services:
     restart: always
     volumes:
       - ./data-collectors/indexes:/scripts
-    command: sleep 3600
+    command: sleep 36000
