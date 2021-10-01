@@ -1,2 +1,2 @@
 # Relativity
-Relative development of market value for trend evaluation.
+Relative development of market valuations for trend evaluation.
