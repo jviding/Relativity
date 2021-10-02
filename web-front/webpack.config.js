@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     entry: [
@@ -25,12 +26,16 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'app.css'
+        }),
+        new ESLintPlugin({
+            extensions: ['js', 'jsx', 'ts', 'tsx']
         })
     ],
     output: {
         path: path.resolve(__dirname, './static/'),
         filename: 'app.js'
     },
+    devtool: 'inline-source-map',
     devServer: {
         allowedHosts: ['*'],
         port: 8080,
