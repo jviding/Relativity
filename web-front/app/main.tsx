@@ -9,11 +9,8 @@ interface IState {
 
 class Main extends React.Component <unknown, IState> {
     
-    constructor(props: unknown) {
-        super(props)
-        this.state = {
-            test: 'Hello, '
-        }
+    state: IState = {
+        test: "Hello"
     }
 
     render() {
