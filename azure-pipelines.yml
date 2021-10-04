@@ -19,7 +19,7 @@ steps:
     resourceGroupName: 'ArmRelativity-rg'
     location: 'West Europe'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/jviding/Relativity/blob/main/deployment/azuredeploy.json'
+    csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
     overrideParameters: '-project relativityarmpipeline'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
