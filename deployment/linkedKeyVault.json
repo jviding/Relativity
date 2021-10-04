@@ -38,17 +38,8 @@
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "defaultAction": "Deny",
-                    "ipRules": [
-                        {
-                            "value": "127.0.0.1/32"
-                        }
-                    ],
-                    "virtualNetworkRules": [
-                        {
-                            "id": "string",
-                            "ignoreMissingVnetServiceEndpoint": true
-                        }
-                    ]
+                    "ipRules": [],
+                    "virtualNetworkRules": []
                 },
                 "provisioningState": "Succeeded",
                 "publicNetworkAccess": "disabled",
