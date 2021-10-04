@@ -18,18 +18,31 @@ services:
 
   # API
 
-  api-public:
+  api-private:
     build:
-      context: ./web-api/public
+      context: ./web-api/private
       dockerfile: dev.Dockerfile
     restart: always
     volumes: 
-      - ./web-api/public:/app
+      - ./web-api/private:/app
       # TODO: Secrets/configurations
     ports:
-      - "8081:8081"
+      - "8082:8082"
     working_dir: /app
     command: sleep 3600 #python3 -u manage.py runserver 0.0.0.0:8081
+
+#  api-public:
+#    build:
+#      context: ./web-api/public
+#      dockerfile: dev.Dockerfile
+#    restart: always
+#    volumes: 
+#      - ./web-api/public:/app
+      # TODO: Secrets/configurations
+#    ports:
+#      - "8081:8081"
+#    working_dir: /app
+#    command: sleep 3600 #python3 -u manage.py runserver 0.0.0.0:8081
 
 
   # DATABASE
