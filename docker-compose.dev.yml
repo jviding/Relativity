@@ -4,19 +4,33 @@ services:
 
   # FRONT
   
-  front:
+#  front:
+#    build:
+#      context: ./web-front
+#      dockerfile: dev.Dockerfile
+#    restart: always
+#    volumes: 
+#      - ./web-front:/app
+#    ports:
+#      - "8080:8080"
+#    working_dir: /app
+#   command: sleep 3600 #npm start
+
+  # API
+
+  api-public:
     build:
-      context: ./web-front
+      context: ./web-api/public
       dockerfile: dev.Dockerfile
     restart: always
     volumes: 
-      - ./web-front:/app
+      - ./web-api/public:/app
+      # TODO: Secrets/configurations
     ports:
-      - "8080:8080"
+      - "8081:8081"
     working_dir: /app
-    command: sleep 3600 #npm start
+    command: sleep 3600 #python3 -u manage.py runserver 0.0.0.0:8081
 
-  # API
 
   # DATABASE
   # TODO...
