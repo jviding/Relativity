@@ -21,6 +21,25 @@
     "variables": {},
     "resources": [
         {
+            "name": "linkedKeyVault",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linkedKeyVault.json"
+                },
+                "parameters": {
+                    "name": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
             "name": "linkedStorageAccount",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
