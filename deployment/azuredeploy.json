@@ -6,7 +6,7 @@
             "type": "string"
         },
         "adminPassword": {
-            "type": "string"
+            "type": "securestring"
         },
         "storageAccountName": {
             "type": "string"

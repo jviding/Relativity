@@ -8,7 +8,7 @@
             "maxLength": 24
         },
         "adminPassword": {
-            "type": "string",
+            "type": "securestring",
             "minLength": 12,
             "maxLength": 72
         },
@@ -101,7 +101,7 @@
             ],
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "Basic_A0"
+                    "vmSize": "Standard_A1_v2"
                 },
                 "osProfile": {
                     "computerName": "[variables('vmName')]",
