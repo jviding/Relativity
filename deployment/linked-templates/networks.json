@@ -1,0 +1,73 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vnetName": "virtualNetworks",
+        "vnetCIDR": "10.0.0.0/16",
+        "appGwSubnetName": "appGwPublicSubnet",
+        "appGwSubnetCIDR": "10.0.0.0/24",
+        "bastionSubnetName": "bastionPublicSubnet",
+        "bastionSubnetCIDR": "10.0.1.0/24",
+        "internalSubnetName": "internalPrivateSubnet",
+        "internalSubnetCIDR": "10.0.10.0/24",
+        "clusterSubnetName": "clusterPrivateSubnet",
+        "clusterSubnetCIDR": "10.0.11.0/24"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('vnetName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnetCIDR')]"
+                    ]
+                },
+                "enableDdosProtection": false,
+                "enableVmProtection": false,
+                "subnets": [
+                    {
+                        "name": "[variables('appGwSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('appGwSubnetCIDR')]",
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Disabled"
+                        }
+                    },
+                    {
+                        "name": "[variables('bastionSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('bastionSubnetCIDR')]",
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Disabled"
+                        }
+                    },
+                    {
+                        "name": "[variables('internalSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('internalSubnetCIDR')]",
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Disabled"
+                        }
+                    },
+                    {
+                        "name": "[variables('clusterSubnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('clusterSubnetCIDR')]",
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Disabled"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}

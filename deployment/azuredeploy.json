@@ -22,28 +22,9 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "linkedNetworks.json"
+                    "relativePath": "linked-templates/networks.json"
                 },
                 "parameters": {
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
-        {
-            "name": "linkedStorageAccount",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "relativePath": "linkedStorageAccount.json"
-                },
-                "parameters": {
-                    "name": {
-                        "value": "[parameters('storageAccountName')]"
-                    },
                     "location": {
                         "value": "[parameters('location')]"
                     }
