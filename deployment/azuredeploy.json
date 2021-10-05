@@ -36,7 +36,7 @@
                 },
                 "parameters": {
                     "bastionSubnet": {
-                        "value": "[reference('linkedNetworks').outputs.bastionSubnet.value]"
+                        "value": "[reference('linkedNetworks').outputs.bastionSubnetID.value]"
                     }
                 }
             }            

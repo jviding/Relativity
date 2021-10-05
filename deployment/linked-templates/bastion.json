@@ -9,6 +9,7 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "bastionPublicIpAddressName": "bastionPublicIpAddress",
+        "bastionPublicIpAddress": "[resourceId('Microsoft.Network/publicIPAddresses', variables('bastionPublicIpAddressName'))]",
         "bastionHostName": "bastionHost"
     },
     "resources": [
@@ -18,7 +19,7 @@
             "name": "[variables('bastionPublicIpAddressName')]",
             "location": "[variables('location')]",
             "sku": {
-                "name": "Basic"
+                "name": "Standard"
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
@@ -30,7 +31,7 @@
             "name": "[variables('bastionHostName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses',variables('bastionPublicIpAddressName'))]"
+                "[variables('bastionPublicIpAddress')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -41,7 +42,7 @@
                                 "id": "[parameters('bastionSubnet')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('bastionPublicIpAddressName'))]"
+                                "id": "[variables('bastionPublicIpAddress')]"
                             }
                         }
                     }

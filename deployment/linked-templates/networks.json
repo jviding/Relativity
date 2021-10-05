@@ -67,9 +67,25 @@
         }
     ],
     "outputs": {
-        "bastionSubnet": {
+        "vnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+        },
+        "appGwSubnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('appGwSubnetName'))]"
+        },
+        "bastionSubnetID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+        },
+        "internalSubnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('internalSubnetName'))]"
+        },
+        "clusterSubnetID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('clusterSubnetName'))]"
         }
     }
 }
