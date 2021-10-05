@@ -1,12 +1,9 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "type": "string"
-        }
-    },
+    "parameters": {},
     "variables": {
+        "location": "[resourceGroup().location]",
         "vnetName": "virtualNetworks",
         "vnetCIDR": "10.0.0.0/16",
         "appGwSubnetName": "appGwPublicSubnet",
@@ -23,7 +20,7 @@
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
             "name": "[variables('vnetName')]",
-            "location": "[parameters('location')]",
+            "location": "[variables('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
