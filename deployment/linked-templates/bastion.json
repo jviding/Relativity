@@ -118,14 +118,11 @@
                     },
                     "osDisk": {
                         "name": "[concat(variables('vmName'), '_OSDisk')]",
-                        "createOption": "FromImage",
-                        "managedDisk": {
-                            "storageAccountType": "Standard_LRS"
-                        }
+                        "createOption": "FromImage"
                     },
                     "dataDisks": [
                         {
-                            "diskSizeGB": 0,
+                            "diskSizeGB": 32,
                             "lun": 0,
                             "createOption": "Empty"
                         }
