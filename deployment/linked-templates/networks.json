@@ -69,7 +69,7 @@
     "outputs": {
         "bastionSubnet": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'), variables('bastionSubnetName'))]"
         }
     }
 }
