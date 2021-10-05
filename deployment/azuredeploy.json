@@ -44,6 +44,37 @@
                     "relativePath": "linked-templates/networks.json"
                 }
             }
+        },
+        {
+            "name": "linkedBastion",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','linkedNetworks')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/bastion.json"
+                },
+                "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "bastionSubnetID": {
+                        "value": "[reference('linkedNetworks').outputs.bastionSubnetID.value]"
+                    },
+                    "internalSubnetID": {
+                        "value": "[reference('linkedNetworks').outputs.internalSubnetID.value]"
+                    },
+                    "diagnosticsStorageUri": {
+                        "value": "[reference('linkedStorageAccount').outputs.diagnosticsStorageUri.value]"
+                    }
+                }
+            }            
         }
     ],
     "outputs": {}

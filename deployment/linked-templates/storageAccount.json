@@ -25,13 +25,13 @@
         }
     ],
     "outputs": {
-        "storageAccount": {
+        "storageAccountID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
         },
-        "storageEndpoint": {
-            "type": "object",
-            "value": "[reference(parameters('storageAccountName')).primaryEndpoints]"
+        "diagnosticsStorageUri": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.blob]"
         }
     }
 }

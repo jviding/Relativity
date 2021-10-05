@@ -2,21 +2,44 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "bastionSubnet": {
+        "adminUsername": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+        },
+        "adminPassword": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 72
+        },
+        "bastionSubnetID": {
+            "type": "string"
+        },
+        "internalSubnetID": {
+            "type": "string"
+        },
+        "diagnosticsStorageUri": {
             "type": "string"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "bastionPublicIpAddressName": "bastionPublicIpAddress",
-        "bastionPublicIpAddress": "[resourceId('Microsoft.Network/publicIPAddresses', variables('bastionPublicIpAddressName'))]",
-        "bastionHostName": "bastionHost"
+        "publicIpAddressName": "bastionPublicIpAddress",
+        "hostName": "bastionHost",
+        "vmNicName": "bastionVmNic",
+        "vmName": "bastionVm",
+        "vmConfiguration": {
+            "disablePasswordAuthentication": false,
+            "provisionVMAgent": true
+        },
+        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]",
+        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces', variables('vmNicName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2020-11-01",
-            "name": "[variables('bastionPublicIpAddressName')]",
+            "name": "[variables('publicIpAddressName')]",
             "location": "[variables('location')]",
             "sku": {
                 "name": "Standard"
@@ -28,10 +51,10 @@
         {
             "type": "Microsoft.Network/bastionHosts",
             "apiVersion": "2020-11-01",
-            "name": "[variables('bastionHostName')]",
+            "name": "[variables('hostName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('bastionPublicIpAddress')]"
+                "[variables('publicIpAddressID')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -39,14 +62,88 @@
                         "name": "ipConfigurations",
                         "properties": {
                             "subnet": {
-                                "id": "[parameters('bastionSubnet')]"
+                                "id": "[parameters('bastionSubnetID')]"
                             },
                             "publicIPAddress": {
-                                "id": "[variables('bastionPublicIpAddress')]"
+                                "id": "[variables('publicIpAddressID')]"
                             }
                         }
                     }
                 ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('vmNicName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfigurations",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[parameters('internalSubnetID')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-03-01",
+            "name": "[variables('vmName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('vmNicID')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Basic_A0"
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "linuxConfiguration": "[variables('vmConfiguration')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(variables('vmName'), '_OSDisk')]",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "diskSizeGB": 32,
+                            "lun": 0,
+                            "createOption": "Empty"
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[variables('vmNicID')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[parameters('diagnosticsStorageUri')]"
+                    }
+                }
             }
         }
     ],
