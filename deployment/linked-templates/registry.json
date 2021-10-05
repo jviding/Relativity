@@ -19,7 +19,7 @@
             "name": "[variables('registryName')]",
             "location": "[variables('location')]",
             "sku": {
-                "name": "Basic"
+                "name": "Standard"
             },
             "properties": {
                 "adminUserEnabled": false,
