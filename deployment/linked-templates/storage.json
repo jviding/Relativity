@@ -43,7 +43,7 @@
                         "properties": {
                             "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
                             "groupIds": [
-                                "bob"
+                                "blob"
                             ]
                         }
                     }
