@@ -1,10 +1,15 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
+    "parameters": {
+        "bastionSubnet": {
+            "type": "string"
+        }
+    },
     "variables": {
         "location": "[resourceGroup().location]",
-        "bastionPublicIpAddressName": "bastionPublicIpAddress"
+        "bastionPublicIpAddressName": "bastionPublicIpAddress",
+        "bastionHostName": "bastionHost"
     },
     "resources": [
         {
@@ -17,6 +22,30 @@
             },
             "properties": {
                 "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "type": "Microsoft.Network/bastionHosts",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('bastionHostName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses',variables('bastionPublicIpAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfigurations",
+                        "properties": {
+                            "subnet": {
+                                "id": "[parameters('bastionSubnet')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('bastionPublicIpAddressName'))]"
+                            }
+                        }
+                    }
+                ]
             }
         }
     ],

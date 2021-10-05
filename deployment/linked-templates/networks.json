@@ -66,5 +66,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "bastionSubnet": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('bastionSubnetName'))]"
+        }
+    }
 }
