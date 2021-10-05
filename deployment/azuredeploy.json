@@ -2,44 +2,48 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "string"
+        },
         "storageAccountName": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 24
+            "type": "string"
         }
     },
     "functions": [],
     "variables": {},
     "resources": [
         {
+            "name": "linkedStorageAccount",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/storageAccount.json"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    }
+                }
+            }
+        },
+        {
             "name": "linkedNetworks",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','linkedStorageAccount')]"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
                     "relativePath": "linked-templates/networks.json"
                 }
             }
-        },
-        {
-            "name": "linkedBastion",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments','linkedNetworks')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "relativePath": "linked-templates/bastion.json"
-                },
-                "parameters": {
-                    "bastionSubnet": {
-                        "value": "[reference('linkedNetworks').outputs.bastionSubnetID.value]"
-                    }
-                }
-            }            
         }
     ],
     "outputs": {}
