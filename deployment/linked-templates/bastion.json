@@ -122,6 +122,7 @@
                     },
                     "dataDisks": [
                         {
+                            "name": "[concat(variables('vmName'), '_DataDisk')]",
                             "diskSizeGB": 32,
                             "lun": 0,
                             "createOption": "Empty"
