@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "adminUsername": {
+        "adminUsernameBastionVm": {
             "value": "jviding"
         },
-        "adminPassword": {
+        "adminPasswordBastionVm": {
             "value": "Salasana123!"
         },
         "storageAccountName": {

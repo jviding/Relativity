@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "adminUsername": {
+        "adminUsernameBastionVm": {
             "type": "string"
         },
-        "adminPassword": {
+        "adminPasswordBastionVm": {
             "type": "securestring"
         },
         "storageAccountName": {
@@ -16,28 +16,9 @@
     "variables": {},
     "resources": [
         {
-            "name": "linkedStorageAccount",
+            "name": "networks",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "relativePath": "linked-templates/storageAccount.json"
-                },
-                "parameters": {
-                    "storageAccountName": {
-                        "value": "[parameters('storageAccountName')]"
-                    }
-                }
-            }
-        },
-        {
-            "name": "linkedNetworks",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments','linkedStorageAccount')]"
-            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -46,11 +27,33 @@
             }
         },
         {
-            "name": "linkedBastion",
+            "name": "storage",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments','linkedNetworks')]"
+                "[resourceId('Microsoft.Resources/deployments','networks')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/storage.json"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    },
+                    "internalSubnetID": {
+                        "value": "[reference('networks').outputs.internalSubnetID.value]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "bastion",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','storage')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -59,19 +62,19 @@
                 },
                 "parameters": {
                     "adminUsername": {
-                        "value": "[parameters('adminUsername')]"
+                        "value": "[parameters('adminUsernameBastionVm')]"
                     },
                     "adminPassword": {
-                        "value": "[parameters('adminPassword')]"
+                        "value": "[parameters('adminPasswordBastionVm')]"
                     },
                     "bastionSubnetID": {
-                        "value": "[reference('linkedNetworks').outputs.bastionSubnetID.value]"
+                        "value": "[reference('networks').outputs.bastionSubnetID.value]"
                     },
                     "internalSubnetID": {
-                        "value": "[reference('linkedNetworks').outputs.internalSubnetID.value]"
+                        "value": "[reference('networks').outputs.internalSubnetID.value]"
                     },
                     "diagnosticsStorageUri": {
-                        "value": "[reference('linkedStorageAccount').outputs.diagnosticsStorageUri.value]"
+                        "value": "[reference('storage').outputs.diagnosticsStorageUri.value]"
                     }
                 }
             }            
