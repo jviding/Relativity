@@ -14,7 +14,7 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "privateEndpointName": "storageAccountPrivateEndpoint",
-        "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+        "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
     },
     "resources": [
         {
@@ -34,7 +34,7 @@
             "name": "[variables('privateEndpointName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('storageAccountId')]"
+                "[variables('storageAccountID')]"
             ],
             "properties": {
                 "subnet": {
@@ -44,7 +44,7 @@
                     {
                         "name": "[variables('privateEndpointName')]",
                         "properties": {
-                            "privateLinkServiceId": "[variables('storageAccountId')]",
+                            "privateLinkServiceId": "[variables('storageAccountID')]",
                             "groupIds": [
                                 "blob"
                             ]
