@@ -8,7 +8,7 @@
         "vnetCIDR": "10.0.0.0/16",
         "appGwSubnetName": "appGwPublicSubnet",
         "appGwSubnetCIDR": "10.0.0.0/24",
-        "bastionSubnetName": "bastionPublicSubnet",
+        "bastionSubnetName": "AzureBastionSubnet",
         "bastionSubnetCIDR": "10.0.1.0/24",
         "internalSubnetName": "internalPrivateSubnet",
         "internalSubnetCIDR": "10.0.10.0/24",
