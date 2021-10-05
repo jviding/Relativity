@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "internalSubnetID": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "registryName": "containerRegistry",
+        "privateEndpointName": "containerRegistryPrivateEndpoint",
+        "registryID": "[resourceId('Microsoft.ContainerRegistry/registries', variables('registryName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2020-11-01-preview",
+            "name": "[variables('registryName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Basic"
+            },
+            "properties": {
+                "adminUserEnabled": false,
+                "policies": {
+                    "retentionPolicy": {
+                        "days": 7,
+                        "status": "enabled"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/privateEndpoints",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('privateEndpointName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('registryID')]"
+            ],
+            "properties": {
+                "subnet": {
+                    "id": "[parameters('internalSubnetID')]"
+                },
+                "privateLinkServiceConnections": [
+                    {
+                        "name": "[variables('privateEndpointName')]",
+                        "properties": {
+                            "privateLinkServiceId": "[variables('registryID')]",
+                            "groupIds": [
+                                "registry"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}
