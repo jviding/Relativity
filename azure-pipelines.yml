@@ -9,17 +9,30 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  deploymentScope: 'Resource Group'
+  azureResourceManagerConnection: 'RelativityArm-conn'
+  subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
+  action: 'Create Or Update Resource Group'
+  resourceGroupName: 'RelativityArm-rg'
+  location: 'West Europe'
+  templateLocation: 'URL of the file'
+  csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
+  csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
+  deploymentMode: 'Incremental'
+  deploymentName: 'DeployPipelineTemplate'
+
 steps:  
 - task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'RelativityArm-conn'
-    subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RelativityArm-rg'
-    location: 'West Europe'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
-    deploymentMode: 'Incremental'
-    deploymentName: 'DeployPipelineTemplate'
+#  inputs:
+#    deploymentScope: 'Resource Group'
+#    azureResourceManagerConnection: 'RelativityArm-conn'
+#    subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
+#    action: 'Create Or Update Resource Group'
+#    resourceGroupName: 'RelativityArm-rg'
+#    location: 'West Europe'
+#    templateLocation: 'URL of the file'
+#    csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
+#    csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
+#    deploymentMode: 'Incremental'
+#    deploymentName: 'DeployPipelineTemplate'
