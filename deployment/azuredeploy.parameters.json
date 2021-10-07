@@ -7,6 +7,9 @@
         },
         "storageAccountName": {
             "value": "storageaccountjviding"
+        },
+        "containerRegistryName": {
+            "value": "containerregistryjviding"
         }
     }
 }

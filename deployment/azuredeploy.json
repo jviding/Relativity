@@ -14,6 +14,9 @@
         },
         "storageAccountName": {
             "type": "string"
+        },
+        "containerRegistryName": {
+            "type": "string"
         }
     },
     "functions": [],
@@ -101,7 +104,7 @@
             "apiVersion": "2021-04-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments','networks')]",
-                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+                "[resourceId('Microsoft.Resources/deployments','storage')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -109,6 +112,9 @@
                     "relativePath": "linked-templates/registry.json"
                 },
                 "parameters": {
+                    "containerRegistryName": {
+                        "value": "[parameters('containerRegistryName')]"
+                    },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
                     },

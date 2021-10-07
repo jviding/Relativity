@@ -2,6 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "containerRegistryName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+        },
         "subnetInternalID": {
             "type": "string"
         },
@@ -11,16 +16,15 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "registryName": "containerRegistry",
         "privateEndpointName": "containerRegistryPrivateEndpoint",
         "privateDnsZoneGroupName": "containerRegistryPrivateDnsZoneGroup",
-        "registryID": "[resourceId('Microsoft.ContainerRegistry/registries', variables('registryName'))]"
+        "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.ContainerRegistry/registries",
             "apiVersion": "2020-11-01-preview",
-            "name": "[variables('registryName')]",
+            "name": "[parameters('containerRegistryName')]",
             "location": "[variables('location')]",
             "sku": {
                 "name": "Premium"
