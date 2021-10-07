@@ -67,12 +67,36 @@
             }
         },
         {
+            "name": "keyVault",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','identities')]",
+                "[resourceId('Microsoft.Resources/deployments','networks')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/vault.json"
+                },
+                "parameters": {
+                    "subnetInternalID": {
+                        "value": "[reference('networks').outputs.subnetInternalID.value]"
+                    },
+                    "privateDnsZoneID": {
+                        "value": "[reference('networks').outputs.privateDnsZoneID.value]"
+                    }
+                }
+            }
+        },
+        {
             "name": "bastion",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments','networks')]",
-                "[resourceId('Microsoft.Resources/deployments','storage')]"
+                "[resourceId('Microsoft.Resources/deployments','storage')]",
+                "[resourceId('Microsoft.Resources/deployments','vault')]"
             ],
             "properties": {
                 "mode": "Incremental",
