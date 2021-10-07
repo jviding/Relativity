@@ -15,6 +15,9 @@
         "storageAccountName": {
             "type": "string"
         },
+        "keyVaultName": {
+            "type": "string"
+        },
         "containerRegistryName": {
             "type": "string"
         }
@@ -80,6 +83,9 @@
                     "relativePath": "linked-templates/vault.json"
                 },
                 "parameters": {
+                    "keyVaultName": {
+                        "value": "[parameters('keyVaultName')]"
+                    },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
                     },

@@ -8,6 +8,9 @@
         "storageAccountName": {
             "value": "storageaccountjviding"
         },
+        "keyVaultName": {
+            "value": "keyvaultjviding"
+        },
         "containerRegistryName": {
             "value": "containerregistryjviding"
         }

@@ -2,6 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "keyVaultName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+        },
         "subnetInternalID": {
             "type": "string"
         },
@@ -12,17 +17,16 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "tenantID": "[subscription().tenantId]",
-        "keyVaultName": "keyVault",
         "privateEndpointName": "keyVaultPrivateEndpoint",
         "privateDnsZoneGroupName": "keyVaultPrivateDnsZoneGroup",
-        "keyVaultID": "[resourceId('Microsoft.KeyVault/vaults',variables('keyVaultName'))]",
+        "keyVaultID": "[resourceId('Microsoft.KeyVault/vaults',parameters('keyVaultName'))]",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-04-01-preview",
-            "name": "[variables('keyVaultName')]",
+            "name": "[parameters('keyVaultName')]",
             "location": "[variables('location')]",
             "properties": {
                 "sku": {
