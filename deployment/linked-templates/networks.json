@@ -13,10 +13,7 @@
         "subnetInternalName": "subnetPrivateInternal",
         "subnetInternalCIDR": "10.0.10.0/24",
         "subnetClusterName": "subnetPrivateCluster",
-        "subnetClusterCIDR": "10.0.11.0/24",
-        "privateDnsZoneName": "privateDnsZone.relativity",
-        "vnetID":  "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
-        "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones',variables('privateDnsZoneName'))]"
+        "subnetClusterCIDR": "10.0.11.0/24"
     },
     "resources": [
         {
@@ -67,34 +64,13 @@
                     }
                 ]
             }
-        },
-        {
-            "type": "Microsoft.Network/privateDnsZones",
-            "apiVersion": "2018-09-01",
-            "name": "[variables('privateDnsZoneName')]",
-            "location": "global",
-            "dependsOn": [
-                "[variables('vnetID')]"
-            ],
-            "properties": {}
-        },
-        {
-            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-            "apiVersion": "2018-09-01",
-            "name": "[concat(variables('privateDnsZoneName'),'/link_to_',variables('vnetName'))]",
-            "location": "global",
-            "dependsOn": [
-                "[variables('privateDnsZoneID')]"
-            ],
-            "properties": {
-                "registrationEnabled": false,
-                "virtualNetwork": {
-                    "id": "[variables('vnetID')]"
-                }
-            }
         }
     ],
     "outputs": {
+        "vnetName": {
+            "type": "string",
+            "value": "[variables('vnetName')]"
+        },
         "vnetID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]"
@@ -114,10 +90,6 @@
         "subnetClusterID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetClusterName'))]"
-        },
-        "privateDnsZoneID": {
-            "type": "string",
-            "value": "[variables('privateDnsZoneID')]"
         }
     }
 }
