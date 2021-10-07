@@ -7,19 +7,25 @@
             "minLength": 3,
             "maxLength": 24
         },
-        "subnetInternalID": {
+        "vnetName": {
             "type": "string"
         },
-        "privateDnsZoneID": {
+        "vnetID": {
+            "type": "string"
+        },
+        "subnetInternalID": {
             "type": "string"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "privateEndpointName": "containerRegistryPrivateEndpoint",
-        "privateDnsZoneGroupName": "containerRegistryPrivateDnsZoneGroup",
         "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
-        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
+        "privateEndpointName": "containerRegistryPrivateEndpoint",
+        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
+        "privateDnsZoneName": "privatelink.azurecr.io",
+        "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]",
+        "privateDnsZoneGroupName": "containerRegistryPrivateDnsZoneGroup",
+        "virtualNetworkLinkName": "[concat(variables('privateDnsZoneName'),'/link_to_',parameters('vnetName'))]"
     },
     "resources": [
         {
@@ -59,12 +65,35 @@
             }
         },
         {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('privateDnsZoneName')]",
+            "location": "global",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('virtualNetworkLinkName')]",
+            "location": "global",
+            "dependsOn": [
+                "[variables('privateDnsZoneID')]"
+            ],
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                    "id": "[parameters('vnetID')]"
+                }
+            }
+        },
+        {
             "type": "Microsoft.Network/privateEndpoints",
             "apiVersion": "2020-11-01",
             "name": "[variables('privateEndpointName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('registryID')]"
+                "[variables('registryID')]",
+                "[variables('privateDnsZoneID')]"
             ],
             "properties": {
                 "subnet": {
@@ -96,7 +125,7 @@
                             {
                                 "name": "dnsConfig",
                                 "properties": {
-                                    "privateDnsZoneId": "[parameters('privateDnsZoneID')]"
+                                    "privateDnsZoneId": "[variables('privateDnsZoneID')]"
                                 }
                             }
                         ]
