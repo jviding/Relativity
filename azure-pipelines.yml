@@ -13,7 +13,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'RelativityArm-conn'
+    azureResourceManagerConnection: 'Relativity-conn'
     subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'RelativityArm-rg'
