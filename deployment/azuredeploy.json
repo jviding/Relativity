@@ -67,7 +67,7 @@
             }
         },
         {
-            "name": "keyVault",
+            "name": "vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
