@@ -2,31 +2,37 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "keyVaultName": {
+        "vaultName": {
             "type": "string",
             "minLength": 3,
             "maxLength": 24
         },
-        "subnetInternalID": {
+        "vnetName": {
             "type": "string"
         },
-        "privateDnsZoneID": {
+        "vnetID": {
+            "type": "string"
+        },
+        "subnetInternalID": {
             "type": "string"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
         "tenantID": "[subscription().tenantId]",
-        "privateEndpointName": "keyVaultPrivateEndpoint",
-        "privateDnsZoneGroupName": "keyVaultPrivateDnsZoneGroup",
-        "keyVaultID": "[resourceId('Microsoft.KeyVault/vaults',parameters('keyVaultName'))]",
-        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
+        "vaultID": "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]",
+        "privateEndpointName": "vaultPrivateEndpoint",
+        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
+        "privateDnsZoneName": "privatelink.vaultcore.azure.net",
+        "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]",
+        "privateDnsZoneGroupName": "vaultPrivateDnsZoneGroup",
+        "virtualNetworkLinkName": "[concat(variables('privateDnsZoneName'),'/link_to_',parameters('vnetName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2021-04-01-preview",
-            "name": "[parameters('keyVaultName')]",
+            "name": "[parameters('vaultName')]",
             "location": "[variables('location')]",
             "properties": {
                 "sku": {
@@ -53,12 +59,35 @@
             }
         },
         {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('privateDnsZoneName')]",
+            "location": "global",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('virtualNetworkLinkName')]",
+            "location": "global",
+            "dependsOn": [
+                "[variables('privateDnsZoneID')]"
+            ],
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                    "id": "[parameters('vnetID')]"
+                }
+            }
+        },
+        {
             "type": "Microsoft.Network/privateEndpoints",
             "apiVersion": "2020-11-01",
             "name": "[variables('privateEndpointName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('keyVaultID')]"
+                "[variables('vaultID')]",
+                "[variables('privateDnsZoneID')]"
             ],
             "properties": {
                 "subnet": {
@@ -68,7 +97,7 @@
                     {
                         "name": "[variables('privateEndpointName')]",
                         "properties": {
-                            "privateLinkServiceId": "[variables('keyVaultID')]",
+                            "privateLinkServiceId": "[variables('vaultID')]",
                             "groupIds": [
                                 "vault"
                             ]
@@ -90,7 +119,7 @@
                             {
                                 "name": "dnsConfig",
                                 "properties": {
-                                    "privateDnsZoneId": "[parameters('privateDnsZoneID')]"
+                                    "privateDnsZoneId": "[variables('privateDnsZoneID')]"
                                 }
                             }
                         ]
