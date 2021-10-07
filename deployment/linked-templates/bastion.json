@@ -32,8 +32,8 @@
             "disablePasswordAuthentication": false,
             "provisionVMAgent": true
         },
-        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpAddressName'))]",
-        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces', variables('vmNicName'))]"
+        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
+        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]"
     },
     "resources": [
         {

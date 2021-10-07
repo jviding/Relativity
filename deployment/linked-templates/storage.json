@@ -14,7 +14,7 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "privateEndpointName": "storageAccountPrivateEndpoint",
-        "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+        "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]"
     },
     "resources": [
         {
@@ -57,7 +57,7 @@
     "outputs": {
         "storageDiagnosticsUri": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))).primaryEndpoints.blob]"
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))).primaryEndpoints.blob]"
         }
     }
 }

@@ -97,23 +97,23 @@
     "outputs": {
         "vnetID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]"
         },
         "subnetAppGwID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetAppGwName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetAppGwName'))]"
         },
         "subnetBastionID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetBastionName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetBastionName'))]"
         },
         "subnetInternalID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetInternalName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetInternalName'))]"
         },
         "subnetClusterID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetClusterName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetClusterName'))]"
         },
         "privateDnsZoneID": {
             "type": "string",
