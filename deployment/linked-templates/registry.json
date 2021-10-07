@@ -87,6 +87,9 @@
                     "apiVersion": "2020-11-01",
                     "name": "[variables('privateDnsZoneGroupName')]",
                     "location": "[variables('location')]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
+                    ],
                     "properties": {
                         "privateDnsZoneConfigs": [
                             {
