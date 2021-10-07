@@ -95,8 +95,7 @@
             "apiVersion": "2021-04-01",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments','networks')]",
-                "[resourceId('Microsoft.Resources/deployments','storage')]",
-                "[resourceId('Microsoft.Resources/deployments','vault')]"
+                "[resourceId('Microsoft.Resources/deployments','storage')]"
             ],
             "properties": {
                 "mode": "Incremental",
