@@ -15,7 +15,7 @@
         "storageAccountName": {
             "type": "string"
         },
-        "keyVaultName": {
+        "vaultName": {
             "type": "string"
         },
         "containerRegistryName": {
@@ -37,6 +37,7 @@
             }
         },
         {
+            "comments": "Create virtual network and subnets",
             "name": "networks",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -70,6 +71,7 @@
             }
         },
         {
+            "comments": "Create vault, connect to vnet, add private DNS record",
             "name": "vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -83,14 +85,17 @@
                     "relativePath": "linked-templates/vault.json"
                 },
                 "parameters": {
-                    "keyVaultName": {
-                        "value": "[parameters('keyVaultName')]"
+                    "vaultName": {
+                        "value": "[parameters('vaultName')]"
+                    },
+                    "vnetName": {
+                        "value": "[reference('networks').outputs.vnetName.value]"
+                    },
+                    "vnetID": {
+                        "value": "[reference('networks').outputs.vnetID.value]"
                     },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
-                    },
-                    "privateDnsZoneID": {
-                        "value": "[reference('networks').outputs.privateDnsZoneID.value]"
                     }
                 }
             }
