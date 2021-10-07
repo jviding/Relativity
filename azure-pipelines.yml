@@ -16,7 +16,7 @@ steps:
     azureResourceManagerConnection: 'Relativity-conn'
     subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
     action: 'Create Or Update Resource Group'
-    resourceGroupName: 'RelativityArm-rg'
+    resourceGroupName: 'Relativity-rg'
     location: 'West Europe'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
