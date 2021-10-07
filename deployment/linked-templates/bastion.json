@@ -12,13 +12,13 @@
             "minLength": 12,
             "maxLength": 72
         },
-        "bastionSubnetID": {
+        "subnetBastionID": {
             "type": "string"
         },
-        "internalSubnetID": {
+        "subnetInternalID": {
             "type": "string"
         },
-        "diagnosticsStorageUri": {
+        "storageDiagnosticsUri": {
             "type": "string"
         }
     },
@@ -62,7 +62,7 @@
                         "name": "ipConfigurations",
                         "properties": {
                             "subnet": {
-                                "id": "[parameters('bastionSubnetID')]"
+                                "id": "[parameters('subnetBastionID')]"
                             },
                             "publicIPAddress": {
                                 "id": "[variables('publicIpAddressID')]"
@@ -84,7 +84,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
-                                "id": "[parameters('internalSubnetID')]"
+                                "id": "[parameters('subnetInternalID')]"
                             }
                         }
                     }
@@ -139,7 +139,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[parameters('diagnosticsStorageUri')]"
+                        "storageUri": "[parameters('storageDiagnosticsUri')]"
                     }
                 }
             }

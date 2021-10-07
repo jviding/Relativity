@@ -6,14 +6,14 @@
         "location": "[resourceGroup().location]",
         "vnetName": "virtualNetworks",
         "vnetCIDR": "10.0.0.0/16",
-        "appGwSubnetName": "appGwPublicSubnet",
-        "appGwSubnetCIDR": "10.0.0.0/24",
-        "bastionSubnetName": "AzureBastionSubnet",
-        "bastionSubnetCIDR": "10.0.1.0/24",
-        "internalSubnetName": "internalPrivateSubnet",
-        "internalSubnetCIDR": "10.0.10.0/24",
-        "clusterSubnetName": "clusterPrivateSubnet",
-        "clusterSubnetCIDR": "10.0.11.0/24"
+        "subnetAppGwName": "subnetPublicAppGw",
+        "subnetAppGwCIDR": "10.0.0.0/24",
+        "subnetBastionName": "AzureBastionSubnet",
+        "subnetBastionCIDR": "10.0.1.0/24",
+        "subnetInternalName": "subnetPrivateInternal",
+        "subnetInternalCIDR": "10.0.10.0/24",
+        "subnetClusterName": "subnetPrivateCluster",
+        "subnetClusterCIDR": "10.0.11.0/24"
     },
     "resources": [
         {
@@ -31,33 +31,33 @@
                 "enableVmProtection": false,
                 "subnets": [
                     {
-                        "name": "[variables('appGwSubnetName')]",
+                        "name": "[variables('subnetAppGwName')]",
                         "properties": {
-                            "addressPrefix": "[variables('appGwSubnetCIDR')]",
+                            "addressPrefix": "[variables('subnetAppGwCIDR')]",
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Disabled"
                         }
                     },
                     {
-                        "name": "[variables('bastionSubnetName')]",
+                        "name": "[variables('subnetBastionName')]",
                         "properties": {
-                            "addressPrefix": "[variables('bastionSubnetCIDR')]",
+                            "addressPrefix": "[variables('subnetBastionCIDR')]",
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Disabled"
                         }
                     },
                     {
-                        "name": "[variables('internalSubnetName')]",
+                        "name": "[variables('subnetInternalName')]",
                         "properties": {
-                            "addressPrefix": "[variables('internalSubnetCIDR')]",
+                            "addressPrefix": "[variables('subnetInternalCIDR')]",
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Disabled"
                         }
                     },
                     {
-                        "name": "[variables('clusterSubnetName')]",
+                        "name": "[variables('subnetClusterName')]",
                         "properties": {
-                            "addressPrefix": "[variables('clusterSubnetCIDR')]",
+                            "addressPrefix": "[variables('subnetClusterCIDR')]",
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Disabled"
                         }
@@ -71,21 +71,21 @@
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
         },
-        "appGwSubnetID": {
+        "subnetAppGwID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('appGwSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetAppGwName'))]"
         },
-        "bastionSubnetID": {
+        "subnetBastionID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('bastionSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetBastionName'))]"
         },
-        "internalSubnetID": {
+        "subnetInternalID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('internalSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetInternalName'))]"
         },
-        "clusterSubnetID": {
+        "subnetClusterID": {
             "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('clusterSubnetName'))]"
+            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetClusterName'))]"
         }
     }
 }

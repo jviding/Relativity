@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "adminUsernameBastionVm": {
+        "bastionVmAdminUsername": {
             "type": "string"
         },
-        "adminPasswordBastionVm": {
+        "bastionVmAdminPassword": {
             "type": "securestring"
         },
         "storageAccountName": {
@@ -15,6 +15,17 @@
     "functions": [],
     "variables": {},
     "resources": [
+        {
+            "name": "identities",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/identities.json"
+                }
+            }
+        },
         {
             "name": "networks",
             "type": "Microsoft.Resources/deployments",
@@ -42,8 +53,8 @@
                     "storageAccountName": {
                         "value": "[parameters('storageAccountName')]"
                     },
-                    "internalSubnetID": {
-                        "value": "[reference('networks').outputs.internalSubnetID.value]"
+                    "subnetInternalID": {
+                        "value": "[reference('networks').outputs.subnetInternalID.value]"
                     }
                 }
             }
@@ -63,19 +74,19 @@
                 },
                 "parameters": {
                     "adminUsername": {
-                        "value": "[parameters('adminUsernameBastionVm')]"
+                        "value": "[parameters('bastionVmAdminUsername')]"
                     },
                     "adminPassword": {
-                        "value": "[parameters('adminPasswordBastionVm')]"
+                        "value": "[parameters('bastionVmAdminPassword')]"
                     },
-                    "bastionSubnetID": {
-                        "value": "[reference('networks').outputs.bastionSubnetID.value]"
+                    "subnetBastionID": {
+                        "value": "[reference('networks').outputs.subnetBastionID.value]"
                     },
-                    "internalSubnetID": {
-                        "value": "[reference('networks').outputs.internalSubnetID.value]"
+                    "subnetInternalID": {
+                        "value": "[reference('networks').outputs.subnetInternalID.value]"
                     },
-                    "diagnosticsStorageUri": {
-                        "value": "[reference('storage').outputs.diagnosticsStorageUri.value]"
+                    "storageDiagnosticsUri": {
+                        "value": "[reference('storage').outputs.storageDiagnosticsUri.value]"
                     }
                 }
             }            
@@ -94,8 +105,8 @@
                     "relativePath": "linked-templates/registry.json"
                 },
                 "parameters": {
-                    "internalSubnetID": {
-                        "value": "[reference('networks').outputs.internalSubnetID.value]"
+                    "subnetInternalID": {
+                        "value": "[reference('networks').outputs.subnetInternalID.value]"
                     }
                 }
             }
