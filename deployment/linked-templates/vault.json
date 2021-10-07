@@ -29,8 +29,6 @@
                     "family": "A",
                     "name": "standard"
                 },
-                "tenantId": "[variables('tenantID')]",
-                "publicNetworkAccess": "disabled",
                 "accessPolicies": [],
                 "networkAcls": {
                     "bypass": "AzureServices",
@@ -38,8 +36,10 @@
                     "ipRules": [],
                     "virtualNetworkRules": []
                 },
+                "tenantId": "[variables('tenantID')]",
+                "publicNetworkAccess": "disabled",
                 "enabledForDeployment": false,
-                "enabledForTemplateDeployment": true,
+                "enabledForTemplateDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enableRbacAuthorization": false,
                 "enablePurgeProtection": true,
