@@ -111,6 +111,9 @@
                 "parameters": {
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
+                    },
+                    "privateDnsZoneID": {
+                        "value": "[reference('networks').outputs.privateDnsZoneID.value]"
                     }
                 }
             }

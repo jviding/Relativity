@@ -13,7 +13,10 @@
         "subnetInternalName": "subnetPrivateInternal",
         "subnetInternalCIDR": "10.0.10.0/24",
         "subnetClusterName": "subnetPrivateCluster",
-        "subnetClusterCIDR": "10.0.11.0/24"
+        "subnetClusterCIDR": "10.0.11.0/24",
+        "privateDnsZoneName": "privateDnsZone",
+        "vnetID":  "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
+        "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones',variables('privateDnsZoneName'))]"
     },
     "resources": [
         {
@@ -64,6 +67,31 @@
                     }
                 ]
             }
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "name": "[variables('privateDnsZoneName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('vnetID')]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "name": "[concat(variables('privateDnsZoneName'),'/link_to_',variables('vnetName'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('privateDnsZoneID')]"
+            ],
+            "properties": {
+                "registrationEnabled": false,
+                "virtualNetwork": {
+                    "id": "[variables('vnetID')]"
+                }
+            }
         }
     ],
     "outputs": {
@@ -86,6 +114,10 @@
         "subnetClusterID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetClusterName'))]"
+        },
+        "privateDnsZoneID": {
+            "type": "string",
+            "value": "[variables('privateDnsZoneID')]"
         }
     }
 }
