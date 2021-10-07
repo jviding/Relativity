@@ -18,7 +18,8 @@
         "location": "[resourceGroup().location]",
         "privateEndpointName": "containerRegistryPrivateEndpoint",
         "privateDnsZoneGroupName": "containerRegistryPrivateDnsZoneGroup",
-        "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]"
+        "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
+        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
     },
     "resources": [
         {
@@ -88,7 +89,7 @@
                     "name": "[variables('privateDnsZoneGroupName')]",
                     "location": "[variables('location')]",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]"
+                        "[variables('privateEndpointID')]"
                     ],
                     "properties": {
                         "privateDnsZoneConfigs": [
