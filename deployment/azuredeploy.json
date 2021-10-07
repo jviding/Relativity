@@ -6,7 +6,8 @@
             "type": "string"
         },
         "bastionVmAdminPassword": {
-            "type": "securestring"
+            "type": "securestring",
+            "defaultValue": "[newGuid()]"
         },
         "storageAccountName": {
             "type": "string"

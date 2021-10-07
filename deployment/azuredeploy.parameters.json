@@ -5,9 +5,6 @@
         "bastionVmAdminUsername": {
             "value": "jviding"
         },
-        "bastionVmAdminPassword": {
-            "value": "Salasana123!"
-        },
         "storageAccountName": {
             "value": "storageaccountjviding"
         }
