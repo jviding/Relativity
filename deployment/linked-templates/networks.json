@@ -72,7 +72,7 @@
             "type": "Microsoft.Network/privateDnsZones",
             "apiVersion": "2018-09-01",
             "name": "[variables('privateDnsZoneName')]",
-            "location": "[variables('location')]",
+            "location": "global",
             "dependsOn": [
                 "[variables('vnetID')]"
             ],
@@ -82,7 +82,7 @@
             "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
             "apiVersion": "2018-09-01",
             "name": "[concat(variables('privateDnsZoneName'),'/link_to_',variables('vnetName'))]",
-            "location": "[variables('location')]",
+            "location": "global",
             "dependsOn": [
                 "[variables('privateDnsZoneID')]"
             ],
