@@ -14,7 +14,7 @@
         "subnetInternalCIDR": "10.0.10.0/24",
         "subnetClusterName": "subnetPrivateCluster",
         "subnetClusterCIDR": "10.0.11.0/24",
-        "privateDnsZoneName": "privateDnsZone",
+        "privateDnsZoneName": "privateDnsZone.relativity",
         "vnetID":  "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
         "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones',variables('privateDnsZoneName'))]"
     },
