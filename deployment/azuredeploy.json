@@ -32,6 +32,7 @@
     },
     "resources": [
         {
+            "comments": "Create user assigned identities",
             "name": "identities",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
