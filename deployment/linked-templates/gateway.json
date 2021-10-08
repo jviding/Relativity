@@ -61,7 +61,6 @@
                     "minCapacity": 0,
                     "maxCapacity": 10
                 },
-                "enableFips": false,
                 "enableHttp2": false,
                 "gatewayIPConfigurations": [
                     {
