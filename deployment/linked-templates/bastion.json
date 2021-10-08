@@ -18,7 +18,7 @@
         "subnetInternalID": {
             "type": "string"
         },
-        "storageDiagnosticsUri": {
+        "blobDiagnosticsUri": {
             "type": "string"
         }
     },
@@ -139,7 +139,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[parameters('storageDiagnosticsUri')]"
+                        "storageUri": "[parameters('blobDiagnosticsUri')]"
                     }
                 }
             }
