@@ -80,7 +80,7 @@
         },
         {
             "comments": "Add private DNS record for privateEndpoint",
-            "name": "dns",
+            "name": "dns-vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [

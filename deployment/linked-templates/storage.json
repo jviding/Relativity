@@ -61,7 +61,7 @@
         },
         {
             "comments": "Add private DNS record for privateEndpoint",
-            "name": "dns",
+            "name": "dns-blob",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
