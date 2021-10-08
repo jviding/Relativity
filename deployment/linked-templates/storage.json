@@ -10,9 +10,6 @@
         "vnetName": {
             "type": "string"
         },
-        "vnetID": {
-            "type": "string"
-        },
         "subnetInternalID": {
             "type": "string"
         }
@@ -21,9 +18,8 @@
         "location": "[resourceGroup().location]",
         "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
         "privateEndpointName": "blobPrivateEndpoint",
-        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.blob.core.windows.net",
-        "privateDnsZoneGroupName": "blobPrivateDnsZoneGroupName"
+        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/blobPrivateDnsZoneGroupName')]"
     },
     "resources": [
         {

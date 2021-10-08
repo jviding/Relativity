@@ -67,9 +67,6 @@
                     "vnetName": {
                         "value": "[reference('networks').outputs.vnetName.value]"
                     },
-                    "vnetID": {
-                        "value": "[reference('networks').outputs.vnetID.value]"
-                    },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
                     }
