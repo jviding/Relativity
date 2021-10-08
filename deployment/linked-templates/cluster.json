@@ -5,6 +5,18 @@
         "identityClusterID": {
             "type": "string"
         },
+        "identityAppGwID": {
+            "type": "string"
+        },
+        "appGwID": {
+            "type": "string"
+        },
+        "appGwClientID": {
+            "type": "string"
+        },
+        "appGwPrincipalID": {
+            "type": "string"
+        },
         "subnetClusterID": {
             "type": "string"
         }
@@ -16,7 +28,6 @@
         "clusterServiceCIDR": "10.11.0.0/16",
         "clusterDnsServiceIP": "10.11.0.5",
         "clusterDockerBridgeCIDR": "172.17.0.0/16",
-        "clusterID": "[resourceId('Microsoft.ContainerService/managedClusters',variables('clusterName'))]",
         "kubernetesVersion": "1.20"
     },
     "resources": [
@@ -108,18 +119,18 @@
                     },
                     "kubeDashboard": {
                         "enabled": false
-                    }/*,
+                    },
                     "ingressApplicationGateway": {
                         "enabled": true,
                         "config": {
-                            "applicationGatewayId": "[parameters()]"
+                            "applicationGatewayId": "[parameters('appGwID')]"
                         },
                         "identity": {
-                            "clientId": "[parameters()]",
-                            "objectId": "[parameters()]",
-                            "resourceId": "[parameters()]"
+                            "clientId": "[parameters('appGwClientID')]",
+                            "objectId": "[parameters('appGwPrincipalID')]",
+                            "resourceId": "[parameters('identityAppGwID')]"
                         }
-                    }*/
+                    }
                 },
                 "podIdentityProfile": {
                     "enabled": false

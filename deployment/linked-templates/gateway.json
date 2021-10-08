@@ -154,5 +154,18 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "appGwID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))]"
+        },
+        "appGwClientID": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))).clientId]"
+        },
+        "appGwPrincipalID": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))).principalId]"
+        }
+    }
 }
