@@ -26,10 +26,7 @@
     "variables": {
         "identitiesID": "[resourceId('Microsoft.Resources/deployments','identities')]",
         "networksID": "[resourceId('Microsoft.Resources/deployments','networks')]",
-        "storageID": "[resourceId('Microsoft.Resources/deployments','storage')]",
-        "vaultID": "[resourceId('Microsoft.Resources/deployments','vault')]",
-        "bastionID": "[resourceId('Microsoft.Resources/deployments','bastion')]",
-        "registryID": "[resourceId('Microsoft.Resources/deployments','registry')]"
+        "storageID": "[resourceId('Microsoft.Resources/deployments','storage')]"
     },
     "resources": [
         {
