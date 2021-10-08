@@ -11,7 +11,7 @@
         "vaultName": {
             "value": "vaultjviding"
         },
-        "containerRegistryName": {
+        "registryName": {
             "value": "registryjviding"
         }
     }
