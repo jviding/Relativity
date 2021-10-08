@@ -2,32 +2,21 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vnetName": {
-            "type": "string"
-        },
-        "vnetID": {
-            "type": "string"
-        },
-        "subnetInternalID": {
-            "type": "string"
-        },
-        "groupIds": {
-            "type": "string"
-        },
         "privateDnsZoneName": {
             "type": "string"
         },
-        "serviceID": {
+        "privateDnsZoneGroupName": {
+            "type": "string"
+        },
+        "vnetName": {
             "type": "string"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "privateEndpointName": "[concat(parameters('groupIds'),'PrivateEndpoint')]",
-        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones',parameters('privateDnsZoneName'))]",
-        "privateDnsZoneGroupName": "[concat(parameters('groupIds'),'PrivateDnsZoneGroup')]",
-        "virtualNetworkLinkName": "[concat(parameters('privateDnsZoneName'),'/link_to_',parameters('vnetName'))]"
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
+        "virtualNetworkLinkName": "[concat('link_to_',parameters('vnetName'))]"
     },
     "resources": [
         {
@@ -35,68 +24,43 @@
             "apiVersion": "2018-09-01",
             "name": "[parameters('privateDnsZoneName')]",
             "location": "global",
-            "properties": {}
-        },
-        {
-            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-            "apiVersion": "2018-09-01",
-            "name": "[variables('virtualNetworkLinkName')]",
-            "location": "global",
-            "dependsOn": [
-                "[variables('privateDnsZoneID')]"
-            ],
-            "properties": {
-                "registrationEnabled": false,
-                "virtualNetwork": {
-                    "id": "[parameters('vnetID')]"
+            "properties": {},
+            "resources": [
+                {
+                    "type": "virtualNetworkLinks",
+                    "apiVersion": "2018-09-01",
+                    "name": "[variables('virtualNetworkLinkName')]",
+                    "location": "global",
+                    "dependsOn": [
+                        "[variables('privateDnsZoneID')]"
+                    ],
+                    "properties": {
+                        "registrationEnabled": false,
+                        "virtualNetwork": {
+                            "id": "[variables('vnetID')]"
+                        }
+                    }
                 }
-            }
+            ]
         },
         {
-            "type": "Microsoft.Network/privateEndpoints",
+            "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
             "apiVersion": "2020-11-01",
-            "name": "[variables('privateEndpointName')]",
+            "name": "[parameters('privateDnsZoneGroupName')]",
             "location": "[variables('location')]",
             "dependsOn": [
                 "[variables('privateDnsZoneID')]"
             ],
             "properties": {
-                "subnet": {
-                    "id": "[parameters('subnetInternalID')]"
-                },
-                "privateLinkServiceConnections": [
+                "privateDnsZoneConfigs": [
                     {
-                        "name": "[variables('privateEndpointName')]",
+                        "name": "dnsConfig",
                         "properties": {
-                            "privateLinkServiceId": "[parameters('serviceID')]",
-                            "groupIds": [
-                                "[parameters('groupIds')]"
-                            ]
+                            "privateDnsZoneId": "[variables('privateDnsZoneID')]"
                         }
                     }
                 ]
-            },
-            "resources": [
-                {
-                    "type": "privateDnsZoneGroups",
-                    "apiVersion": "2020-11-01",
-                    "name": "[variables('privateDnsZoneGroupName')]",
-                    "location": "[variables('location')]",
-                    "dependsOn": [
-                        "[variables('privateEndpointID')]"
-                    ],
-                    "properties": {
-                        "privateDnsZoneConfigs": [
-                            {
-                                "name": "dnsConfig",
-                                "properties": {
-                                    "privateDnsZoneId": "[variables('privateDnsZoneID')]"
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
+            }
         }
     ],
     "outputs": {}
