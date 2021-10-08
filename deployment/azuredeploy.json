@@ -108,6 +108,31 @@
             }
         },
         {
+            "comments": "Create appGateway",
+            "name": "gateway",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[variables('identitiesID')]",
+                "[variables('networksID')]",
+                "[variables('vaultID')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/gateway.json"
+                },
+                "parameters": {
+                    "identityAppGwID": {
+                        "value": "[reference('identities').outputs.identityAppGwID.value]"
+                    },
+                    "subnetAppGwID": {
+                        "value": "[reference('networks').outputs.subnetAppGwID.value]"
+                    }
+                }
+            }
+        },
+        {
             "comments": "Create VM, add bastion connection, store boot diagnostics to blob",
             "name": "bastion",
             "type": "Microsoft.Resources/deployments",
@@ -165,9 +190,9 @@
                     }
                 }
             }
-        },
+        }/*,
         {
-            "comments": "",
+            "comments": "Create managed cluster",
             "name": "cluster",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -191,7 +216,7 @@
                     }
                 }
             }
-        }
+        }*/
     ],
     "outputs": {}
 }

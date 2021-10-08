@@ -1,0 +1,159 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "identityAppGwID": {
+            "type": "string"
+        },
+        "subnetAppGwID": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "publicIpAddressName": "appGwPublicIpAddress",
+        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
+        "appGwName": "appGw",
+        "frontendIpConfigName": "appGwFrontendIpConfig",
+        "frontendIPConfigID": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations',variables('appGwName'),variables('frontendIpConfigName'))]",
+        "frontendHttpPortName": "appGwFrontendHttpPort",
+        "frontendHttpPortID": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts',variables('appGwName'),variables('frontendHttpPortName'))]",
+        "backendAddressPoolName": "appGwBackendAddressPool",
+        "backendAddressPoolID": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools',variables('appGwName'),variables('backendAddressPoolName'))]",
+        "backendHttpSettingsName": "appGwHttpSettings",
+        "backendHttpSettingsID": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection',variables('appGwName'),variables('backendHttpSettingsName'))]",
+        "httpListenerName": "appGwHttpListener",
+        "httpListenerID": "[resourceId('Microsoft.Network/applicationGateways/httpListeners',variables('appGwName'),variables('httpListenerName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('publicIpAddressName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "type": "Microsoft.Network/applicationGateways",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('appGwName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('publicIpAddressID')]"
+            ],
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('identityAppGwID')]": {}
+                }
+            },
+            "properties": {
+                "sku": {
+                    "name": "Standard_v2",
+                    "tier": "Standard_v2"
+                },
+                "autoscaleConfiguration": {
+                    "minCapacity": 0,
+                    "maxCapacity": 10
+                },
+                "enableFips": false,
+                "enableHttp2": false,
+                "gatewayIPConfigurations": [
+                    {
+                        "name": "appGwIpConfig",
+                        "properties": {
+                            "subnet": {
+                                "id": "[parameters('subnetAppGwID')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendIPConfigurations": [
+                    {
+                        "name": "[variables('frontendIpConfigName')]",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[variables('publicIpAddressID')]"
+                            }
+                        }
+                    }
+                ],
+                "frontendPorts": [
+                    {
+                        "name": "[variables('frontendHttpPortName')]",
+                        "properties": {
+                            "port": 80
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[variables('backendAddressPoolName')]"
+                    }
+                ],
+                "backendHttpSettingsCollection": [
+                    {
+                        "name": "[variables('backendHttpSettingsName')]",
+                        "properties": {
+                            "port": 80,
+                            "protocol": "Http",
+                            "cookieBasedAffinity": "Disabled",
+                            "requestTimeout": 20
+                        }
+                    }
+                ],
+                "httpListeners": [
+                    {
+                        "name": "[variables('httpListenerName')]",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[variables('frontendIPConfigID')]"
+                            },
+                            "frontendPort": {
+                                "id": "[variables('frontendHttpPortID')]"
+                            },
+                            "protocol": "Http"
+                        }
+                    }
+                ],
+                "requestRoutingRules": [
+                    {
+                        "name": "appGwRequestRoutingRule",
+                        "properties": {
+                            "ruleType": "Basic",
+                            "httpListener": {
+                                "id": "[variables('httpListenerID')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[variables('backendAddressPoolID')]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[variables('backendHttpSettingsID')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "defaultHttpProbe",
+                        "properties": {
+                            "protocol": "Http",
+                            "path": "/",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": true,
+                            "minServers": 0
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}
