@@ -17,7 +17,7 @@
         "clusterDnsServiceIP": "10.11.0.5",
         "clusterDockerBridgeCIDR": "172.17.0.0/16",
         "clusterID": "[resourceId('Microsoft.ContainerService/managedClusters',variables('clusterName'))]",
-        "kubernetesVersion": "1.21"
+        "kubernetesVersion": "1.20"
     },
     "resources": [
         {
