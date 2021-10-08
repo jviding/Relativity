@@ -4,9 +4,16 @@
     "parameters": {},
     "variables": {
         "location": "[resourceGroup().location]",
+        "identityAppGwName": "appGwIdentity",
         "identityClusterName": "clusterIdentity"
     },
     "resources": [
+        {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "2018-11-30",
+            "name": "[variables('identityAppGwName')]",
+            "location": "[variables('location')]"
+        },
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "apiVersion": "2018-11-30",
@@ -15,6 +22,10 @@
         }
     ],
     "outputs": {
+        "identityAppGwID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]"
+        },
         "identityClusterID": {
             "type": "string",
             "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"
