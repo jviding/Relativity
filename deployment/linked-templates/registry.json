@@ -10,9 +10,6 @@
         "vnetName": {
             "type": "string"
         },
-        "vnetID": {
-            "type": "string"
-        },
         "subnetInternalID": {
             "type": "string"
         }
@@ -20,12 +17,10 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('containerRegistryName'))]",
-        "privateEndpointName": "containerRegistryPrivateEndpoint",
+        "privateEndpointName": "registryPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.azurecr.io",
-        "privateDnsZoneID": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]",
-        "privateDnsZoneGroupName": "containerRegistryPrivateDnsZoneGroup",
-        "virtualNetworkLinkName": "[concat(variables('privateDnsZoneName'),'/link_to_',parameters('vnetName'))]"
+        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/registryPrivateDnsZoneGroupName')]"
     },
     "resources": [
         {
@@ -65,35 +60,12 @@
             }
         },
         {
-            "type": "Microsoft.Network/privateDnsZones",
-            "apiVersion": "2018-09-01",
-            "name": "[variables('privateDnsZoneName')]",
-            "location": "global",
-            "properties": {}
-        },
-        {
-            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
-            "apiVersion": "2018-09-01",
-            "name": "[variables('virtualNetworkLinkName')]",
-            "location": "global",
-            "dependsOn": [
-                "[variables('privateDnsZoneID')]"
-            ],
-            "properties": {
-                "registrationEnabled": false,
-                "virtualNetwork": {
-                    "id": "[parameters('vnetID')]"
-                }
-            }
-        },
-        {
             "type": "Microsoft.Network/privateEndpoints",
             "apiVersion": "2020-11-01",
             "name": "[variables('privateEndpointName')]",
             "location": "[variables('location')]",
             "dependsOn": [
-                "[variables('registryID')]",
-                "[variables('privateDnsZoneID')]"
+                "[variables('registryID')]"
             ],
             "properties": {
                 "subnet": {
@@ -110,28 +82,34 @@
                         }
                     }
                 ]
-            },
-            "resources": [
-                {
-                    "type": "privateDnsZoneGroups",
-                    "apiVersion": "2020-11-01",
-                    "name": "[variables('privateDnsZoneGroupName')]",
-                    "location": "[variables('location')]",
-                    "dependsOn": [
-                        "[variables('privateEndpointID')]"
-                    ],
-                    "properties": {
-                        "privateDnsZoneConfigs": [
-                            {
-                                "name": "dnsConfig",
-                                "properties": {
-                                    "privateDnsZoneId": "[variables('privateDnsZoneID')]"
-                                }
-                            }
-                        ]
+            }
+        },
+        {
+            "comments": "Add private DNS record for privateEndpoint",
+            "name": "dns",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[variables('registryID')]",
+                "[variables('privateEndpointID')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "dns.json"
+                },
+                "parameters": {
+                    "privateDnsZoneName": {
+                        "value": "[variables('privateDnsZoneName')]"
+                    },
+                    "privateDnsZoneGroupName": {
+                        "value": "[variables('privateDnsZoneGroupName')]"
+                    },
+                    "vnetName": {
+                        "value": "[parameters('vnetName')]"
                     }
                 }
-            ]
+            }
         }
     ],
     "outputs": {}
