@@ -64,6 +64,12 @@
                     "storageAccountName": {
                         "value": "[parameters('storageAccountName')]"
                     },
+                    "vnetName": {
+                        "value": "[reference('networks').outputs.vnetName.value]"
+                    },
+                    "vnetID": {
+                        "value": "[reference('networks').outputs.vnetID.value]"
+                    },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
                     }
@@ -133,6 +139,7 @@
             }            
         },
         {
+            "comments": "Create registry, connect to vnet, add private DNS record",
             "name": "registry",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -149,11 +156,14 @@
                     "containerRegistryName": {
                         "value": "[parameters('containerRegistryName')]"
                     },
+                    "vnetName": {
+                        "value": "[reference('networks').outputs.vnetName.value]"
+                    },
+                    "vnetID": {
+                        "value": "[reference('networks').outputs.vnetID.value]"
+                    },
                     "subnetInternalID": {
                         "value": "[reference('networks').outputs.subnetInternalID.value]"
-                    },
-                    "privateDnsZoneID": {
-                        "value": "[reference('networks').outputs.privateDnsZoneID.value]"
                     }
                 }
             }
