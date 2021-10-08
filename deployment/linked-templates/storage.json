@@ -18,6 +18,7 @@
         "location": "[resourceGroup().location]",
         "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
         "privateEndpointName": "blobPrivateEndpoint",
+        "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.blob.core.windows.net",
         "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/blobPrivateDnsZoneGroupName')]"
     },
@@ -59,11 +60,13 @@
             }
         },
         {
+            "comments": "Add private DNS record for privateEndpoint",
             "name": "dns",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
-                "[variables('storageAccountID')]"
+                "[variables('storageAccountID')]",
+                "[variables('privateEndpointID')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -85,7 +88,7 @@
         }
     ],
     "outputs": {
-        "storageDiagnosticsUri": {
+        "blobDiagnosticsUri": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))).primaryEndpoints.blob]"
         }
