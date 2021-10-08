@@ -3,8 +3,21 @@
     "contentVersion": "1.0.0.0",
     "parameters": {},
     "variables": {
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "identityClusterName": "clusterIdentity"
     },
-    "resources": [],
-    "outputs": {}
+    "resources": [
+        {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "2018-11-30",
+            "name": "[variables('identityClusterName')]",
+            "location": "[variables('location')]"
+        }
+    ],
+    "outputs": {
+        "identityClusterID": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"
+        }
+    }
 }

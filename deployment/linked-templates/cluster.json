@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "identityClusterID": {
+            "type": "string"
+        },
+        "subnetClusterID": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "clusterName": "cluster",
+        "clusterPodCIDR": "10.10.0.0/16",
+        "clusterServiceCIDR": "10.11.0.0/16",
+        "clusterDnsServiceIP": "10.11.0.5",
+        "clusterDockerBridgeCIDR": "172.17.0.0/16",
+        "clusterID": "[resourceId('Microsoft.ContainerService/managedClusters',variables('clusterName'))]",
+        "kubernetesVersion": "1.21"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('clusterName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Basic",
+                "tier": "Free"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[parameters('identityClusterID')]": {}
+                }
+            },
+            "properties": {
+                "kubernetesVersion": "[variables('kubernetesVersion')]",
+                "dnsPrefix": "[variables('clusterName')]",
+                "agentPoolProfiles": [
+                    {
+                        "name": "system",
+                        "count": 3,
+                        "minCount": 3,
+                        "maxCount": 5,
+                        "vmSize": "Standard_A1_v2",
+                        "osType": "Linux",
+                        "osDiskSizeGB": 4,
+                        "vnetSubnetID": "[parameters('subnetClusterID')]",
+                        "enableNodePublicIP": false,
+                        "maxPods": 10,
+                        "scaleSetPriority": "Regular",
+                        "scaleSetEvictionPolicy": "Delete",
+                        "enableAutoScaling": true,
+                        "mode": "System",
+                        "type": "VirtualMachineScaleSets",
+                        "availabilityZones": [],
+                        "nodeLabels": {},
+                        "nodeTaints": []                        
+                    },
+                    {
+                        "name": "user",
+                        "count": 3,
+                        "minCount": 3,
+                        "maxCount": 5,
+                        "vmSize": "Standard_A1_v2",
+                        "osType": "Linux",
+                        "osDiskSizeGB": 4,
+                        "vnetSubnetID": "[parameters('subnetClusterID')]",
+                        "enableNodePublicIP": false,
+                        "maxPods": 10,
+                        "scaleSetPriority": "Regular",
+                        "scaleSetEvictionPolicy": "Delete",
+                        "enableAutoScaling": true,
+                        "mode": "User",
+                        "type": "VirtualMachineScaleSets",
+                        "availabilityZones": [],
+                        "nodeLabels": {},
+                        "nodeTaints": []                        
+                    }
+                ],
+                "linuxProfile": {
+                    "adminUsername": "clusterAdmin",
+                    "ssh": {
+                        "publicKeys": [
+                            {
+                                "keyData": ""
+                            }
+                        ]
+                    }
+                },
+                "addonProfiles": {
+                    "httpApplicationRouting": {
+                        "enabled": false
+                    },
+                    "omsagent": {
+                        "enabled": false
+                    },
+                    "aciConnectorLinux": {
+                        "enabled": false
+                    },
+                    "azurepolicy": {
+                        "enabled": true,
+                        "config": {
+                            "version": "v2"
+                        }
+                    },
+                    "kubeDashboard": {
+                        "enabled": false
+                    }/*,
+                    "ingressApplicationGateway": {
+                        "enabled": true,
+                        "config": {
+                            "applicationGatewayId": "[parameters()]"
+                        },
+                        "identity": {
+                            "clientId": "[parameters()]",
+                            "objectId": "[parameters()]",
+                            "resourceId": "[parameters()]"
+                        }
+                    }*/
+                },
+                "podIdentityProfile": {
+                    "enabled": false
+                },
+                "enableRBAC": true,
+                "networkProfile": {
+                    "networkPlugin": "azure",
+                    "networkPolicy": "azure",
+                    "podCidr": "[variables('clusterPodCIDR')]",
+                    "serviceCidr": "[variables('clusterServiceCIDR')]",
+                    "dnsServiceIP": "[variables('clusterDnsServiceIP')]",
+                    "dockerBridgeCidr": "[variables('clusterDockerBridgeCIDR')]",
+                    "outboundType": "loadBalancer",
+                    "loadBalancerSku": "standard",
+                    "loadBalancerProfile": "[json('null')]"
+                },
+                "aadProfile": "[json('null')]",
+                "autoScalerProfile": {
+                    "scan-interval": "10s",
+                    "scale-down-delay-after-add": "10m",
+                    "scale-down-delay-after-delete": "20s",
+                    "scale-down-delay-after-failure": "3m",
+                    "scale-down-unneeded-time": "10m",
+                    "scale-down-unready-time": "20m",
+                    "scale-down-utilization-threshold": "0.5",
+                    "max-graceful-termination-sec": "600"
+                },
+                "apiServerAccessProfile": {
+                    "enablePrivateCluster": false
+                }        
+            }
+        }
+    ],
+    "outputs": {}
+}
