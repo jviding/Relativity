@@ -7,15 +7,15 @@
         "identityAppGwName": "appGwIdentity",
         "identityClusterName": "clusterIdentity",
         "identityNames": [
-            "appGwIdentity",
-            "clusterIdentity"
+            "[variables('identityAppGwName')]",
+            "[variables('identityClusterName')]"
         ]
     },
     "resources": [
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "apiVersion": "2018-11-30",
-            "name": "[variables('identityNames')[copyIndex()]]",
+            "name": "[variables('identityNames')[copyIndex('identityCopy')]]",
             "location": "[variables('location')]",
             "copy": {
                 "name": "identityCopy",
@@ -24,21 +24,16 @@
         }
     ],
     "outputs": {
-        "identityAppGwID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]"
-        },
-        "appGwClientID": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))).clientId]"
-        },
-        "appGwPrincipalID": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))).principalId]"
-        },
-        "identityClusterID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"
+        "userAssignedIdentities": {
+            "type": "object",
+            "value": {
+                "identityAppGw": {
+                    "name": "[variables('identityAppGwName')]"
+                },
+                "identityCluster": {
+                    "name": "[variables('identityClusterName')]"
+                }
+            }
         }
     }
 }

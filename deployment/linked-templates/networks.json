@@ -66,8 +66,14 @@
         "vnet": {
             "type": "object",
             "value": {
-                "vnet": "[variables('vnet')]",
-                "subnets": "[variables('subnets')]"
+                "name": "[variables('vnet').name]",
+                "CIDR": "[variables('vnet').CIDR]",
+                "subnets": {
+                    "subnetPublicBastion": "[variables('subnetPublicBastion')]",
+                    "subnetPublicAppGw": "[variables('subnetPublicAppGw')]",
+                    "subnetPrivateInternal": "[variables('subnetPrivateInternal')]",
+                    "subnetPrivateCluster": "[variables('subnetPrivateCluster')]"
+                }
             }
         }
     }
