@@ -161,11 +161,11 @@
         },
         "appGwClientID": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))).clientId]"
+            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'),'Full')).clientId]"
         },
         "appGwPrincipalID": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))).principalId]"
+            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'),'Full')).principalId]"
         }
     }
 }
