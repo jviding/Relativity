@@ -22,19 +22,6 @@
                 "count": "[length(variables('identityNames'))]"
             }
         }
-        
-        /*{
-            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-            "apiVersion": "2018-11-30",
-            "name": "[variables('identityAppGwName')]",
-            "location": "[variables('location')]"
-        },
-        {
-            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-            "apiVersion": "2018-11-30",
-            "name": "[variables('identityClusterName')]",
-            "location": "[variables('location')]"
-        }*/
     ],
     "outputs": {
         "identityAppGwID": {

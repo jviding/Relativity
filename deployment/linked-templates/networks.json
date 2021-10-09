@@ -4,97 +4,68 @@
     "parameters": {},
     "variables": {
         "location": "[resourceGroup().location]",
-        "vnetName": "virtualNetworks",
-        "vnetCIDR": "10.0.0.0/16",
-        "subnetAppGwName": "subnetPublicAppGw",
-        "subnetAppGwCIDR": "10.0.0.0/24",
-        "subnetBastionName": "AzureBastionSubnet",
-        "subnetBastionCIDR": "10.0.1.0/24",
-        "subnetInternalName": "subnetPrivateInternal",
-        "subnetInternalCIDR": "10.0.10.0/24",
-        "subnetClusterName": "subnetPrivateCluster",
-        "subnetClusterCIDR": "10.0.11.0/24"
+        "vnet": {
+            "name": "virtualNetwork",
+            "CIDR": "10.0.0.0/16"
+        },
+        "subnetPublicBastion": {
+            "name": "AzureBastionSubnet",
+            "CIDR": "10.0.0.0/24"
+        },
+        "subnetPublicAppGw": {
+            "name": "subnetPublicAppGw",
+            "CIDR": "10.0.1.0/24"
+        },
+        "subnetPrivateInternal": {
+            "name": "subnetPrivateInternal",
+            "CIDR": "10.0.10.0/24"
+        },
+        "subnetPrivateCluster": {
+            "name": "subnetPrivateCluster",
+            "CIDR": "10.0.11.0/24"
+        },
+        "subnets": [
+            "[variables('subnetPublicBastion')]",
+            "[variables('subnetPublicAppGw')]",
+            "[variables('subnetPrivateInternal')]",
+            "[variables('subnetPrivateCluster')]"
+        ]
     },
     "resources": [
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
-            "name": "[variables('vnetName')]",
+            "name": "[variables('vnet').name]",
             "location": "[variables('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[variables('vnetCIDR')]"
+                        "[variables('vnet').CIDR]"
                     ]
                 },
                 "enableDdosProtection": false,
                 "enableVmProtection": false,
-                "subnets": [
-                    {
-                        "name": "[variables('subnetAppGwName')]",
+                "copy": {
+                    "name": "subnets",
+                    "count": "[length(variables('subnets'))]",
+                    "input": {
+                        "name": "[variables('subnets')[copyIndex()].name]",
                         "properties": {
-                            "addressPrefix": "[variables('subnetAppGwCIDR')]",
-                            "privateEndpointNetworkPolicies": "Disabled",
-                            "privateLinkServiceNetworkPolicies": "Disabled"
-                        }
-                    },
-                    {
-                        "name": "[variables('subnetBastionName')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetBastionCIDR')]",
-                            "privateEndpointNetworkPolicies": "Disabled",
-                            "privateLinkServiceNetworkPolicies": "Disabled"
-                        }
-                    },
-                    {
-                        "name": "[variables('subnetInternalName')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetInternalCIDR')]",
-                            "privateEndpointNetworkPolicies": "Disabled",
-                            "privateLinkServiceNetworkPolicies": "Disabled"
-                        }
-                    },
-                    {
-                        "name": "[variables('subnetClusterName')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnetClusterCIDR')]",
+                            "addressPrefix": "[variables('subnets')[copyIndex()].CIDR]",
                             "privateEndpointNetworkPolicies": "Disabled",
                             "privateLinkServiceNetworkPolicies": "Disabled"
                         }
                     }
-                ]
+                }
             }
         }
     ],
     "outputs": {
-        "vnetName": {
-            "type": "string",
-            "value": "[variables('vnetName')]"
-        },
-        "vnetID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]"
-        },
-        "subnetAppGwID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetAppGwName'))]"
-        },
-        "subnetBastionID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetBastionName'))]"
-        },
-        "subnetInternalID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetInternalName'))]"
-        },
-        "subnetClusterID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetClusterName'))]"
-        },
-        "networksObj": {
+        "vnet": {
             "type": "object",
             "value": {
-                "vnetName": "asd"
+                "vnet": "[variables('vnet')]",
+                "subnets": "[variables('subnets')]"
             }
         }
     }

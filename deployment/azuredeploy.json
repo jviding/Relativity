@@ -48,7 +48,7 @@
                     "relativePath": "linked-templates/networks.json"
                 }
             }
-        },
+        }/*,
         {
             "comments": "Create storage account, connect blob to vnet, add private DNS record",
             "name": "storage",
@@ -182,7 +182,7 @@
                     }
                 }
             }
-        }/*,
+        },
         {
             "comments": "Create managed cluster",
             "name": "cluster",
