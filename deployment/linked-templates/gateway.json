@@ -158,14 +158,6 @@
         "appGwID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))]"
-        },
-        "appGwClientID": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'),'Full')).clientId]"
-        },
-        "appGwPrincipalID": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Network/applicationGateways',variables('appGwName'),'Full')).principalId]"
         }
     }
 }

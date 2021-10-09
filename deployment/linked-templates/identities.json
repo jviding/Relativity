@@ -26,6 +26,14 @@
             "type": "string",
             "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]"
         },
+        "appGwClientID": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName')),'Full').clientId]"
+        },
+        "appGwPrincipalID": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName')),'Full').principalId]"
+        },
         "identityClusterID": {
             "type": "string",
             "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"

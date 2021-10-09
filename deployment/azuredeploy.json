@@ -221,10 +221,10 @@
                         "value": "[reference('gateway').outputs.appGwID.value]"
                     },
                     "appGwClientID": {
-                        "value": "[reference('gateway').outputs.appGwClientID]"
+                        "value": "[reference('identities').outputs.appGwClientID]"
                     },
                     "appGwPrincipalID": {
-                        "value": "[reference('gateway').outputs.appGwPrincipalID]"
+                        "value": "[reference('identities').outputs.appGwPrincipalID]"
                     },
                     "subnetClusterID": {
                         "value": "[reference('networks').outputs.subnetClusterID.value]"
