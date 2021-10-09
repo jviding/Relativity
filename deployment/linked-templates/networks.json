@@ -45,33 +45,20 @@
                 },
                 "enableDdosProtection": false,
                 "enableVmProtection": false,
-                "subnets": [
-                    {
-                        "name": "[variables('subnets')[copyIndex()].name]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnets')[copyIndex()].CIDR]",
-                            "privateEndpointNetworkPolicies": "Disabled",
-                            "privateLinkServiceNetworkPolicies": "Disabled"
-                        },
-                        "copy": {
-                            "count": "[length(variables('subnets'))]"
-                        }
-                    }
-                ]/*,
                 "copy": [
                     {
                         "name": "subnets",
                         "count": "[length(variables('subnets'))]",
                         "input": {
-                            "name": "[variables('subnets')[copyIndex()].name]",
+                            "name": "[variables('subnets')[copyIndex('subnets')].name]",
                             "properties": {
-                                "addressPrefix": "[variables('subnets')[copyIndex()].CIDR]",
+                                "addressPrefix": "[variables('subnets')[copyIndex('subnets')].CIDR]",
                                 "privateEndpointNetworkPolicies": "Disabled",
                                 "privateLinkServiceNetworkPolicies": "Disabled"
                             }
                         }
                     }
-                ]*/
+                ]
             }
         }
     ],
