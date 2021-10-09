@@ -5,10 +5,25 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "identityAppGwName": "appGwIdentity",
-        "identityClusterName": "clusterIdentity"
+        "identityClusterName": "clusterIdentity",
+        "identityNames": [
+            "appGwIdentity",
+            "clusterIdentity"
+        ]
     },
     "resources": [
         {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "2018-11-30",
+            "name": "[variables('identityNames')[copyIndex()]]",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "identityCopy",
+                "count": "[length(variables('identityNames'))]"
+            }
+        }
+        
+        /*{
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "apiVersion": "2018-11-30",
             "name": "[variables('identityAppGwName')]",
@@ -19,7 +34,7 @@
             "apiVersion": "2018-11-30",
             "name": "[variables('identityClusterName')]",
             "location": "[variables('location')]"
-        }
+        }*/
     ],
     "outputs": {
         "identityAppGwID": {

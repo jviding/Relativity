@@ -9,8 +9,7 @@
         },
         "adminPassword": {
             "type": "securestring",
-            "minLength": 12,
-            "maxLength": 72
+            "defaultValue": "[newGuid()]"
         },
         "subnetBastionID": {
             "type": "string"

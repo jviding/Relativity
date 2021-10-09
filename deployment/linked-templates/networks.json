@@ -90,6 +90,12 @@
         "subnetClusterID": {
             "type": "string",
             "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnetName'), variables('subnetClusterName'))]"
+        },
+        "networksObj": {
+            "type": "object",
+            "value": {
+                "vnetName": "asd"
+            }
         }
     }
 }

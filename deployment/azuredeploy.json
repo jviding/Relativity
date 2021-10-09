@@ -5,13 +5,6 @@
         "bastionVmAdminUsername": {
             "type": "string"
         },
-        "bastionVmAdminPassword": {
-            "type": "securestring",
-            "defaultValue": "[newGuid()]",
-            "metadata": {
-                "description": "Access can be recovered through portal." 
-            }
-        },
         "storageAccountName": {
             "type": "string"
         },
@@ -152,9 +145,6 @@
                     "adminUsername": {
                         "value": "[parameters('bastionVmAdminUsername')]"
                     },
-                    "adminPassword": {
-                        "value": "[parameters('bastionVmAdminPassword')]"
-                    },
                     "subnetBastionID": {
                         "value": "[reference('networks').outputs.subnetBastionID.value]"
                     },
@@ -192,7 +182,7 @@
                     }
                 }
             }
-        },
+        }/*,
         {
             "comments": "Create managed cluster",
             "name": "cluster",
@@ -231,7 +221,7 @@
                     }
                 }
             }
-        }
+        }*/
     ],
     "outputs": {}
 }
