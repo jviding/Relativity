@@ -28,11 +28,11 @@
         },
         "appGwClientID": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName')),'2018-11-30','Full').clientId]"
+            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))).clientId]"
         },
         "appGwPrincipalID": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName')),'2018-11-30','Full').principalId]"
+            "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))).principalId]"
         },
         "identityClusterID": {
             "type": "string",
