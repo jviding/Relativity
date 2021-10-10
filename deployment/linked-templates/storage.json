@@ -32,7 +32,8 @@
                 "tier": "Standard"
             },
             "tags": {
-                "tag1": "[variables('test')]"
+                "tag1": "[variables('test')]",
+                "tag2": "tag2"
             },
             "kind": "StorageV2"
         }/*,
