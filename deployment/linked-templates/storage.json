@@ -31,6 +31,9 @@
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
+            "tags": {
+                "tag1": "[variables('test')]"
+            },
             "kind": "StorageV2"
         }/*,
         {
