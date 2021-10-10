@@ -26,7 +26,7 @@
     },
     "resources": [
         {
-            "comments": "Create user assigned identities",
+            // Create user assigned identities
             "name": "identities",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -38,7 +38,7 @@
             }
         },
         {
-            "comments": "Create virtual network and subnets",
+            // Create virtual network and subnets
             "name": "networks",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -48,9 +48,11 @@
                     "relativePath": "linked-templates/networks.json"
                 }
             }
-        }/*,
+        },
         {
-            "comments": "Create storage account, connect blob to vnet, add private DNS record",
+            // Create storage account 
+            // Create private endpoint and connect blob storage to network
+            // Create private DNS record
             "name": "storage",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -66,15 +68,12 @@
                     "storageAccountName": {
                         "value": "[parameters('storageAccountName')]"
                     },
-                    "vnetName": {
-                        "value": "[reference('networks').outputs.vnetName.value]"
-                    },
-                    "subnetInternalID": {
-                        "value": "[reference('networks').outputs.subnetInternalID.value]"
+                    "vnet": {
+                        "value": "[reference('networks').outputs.test]"
                     }
                 }
             }
-        },
+        }/*,
         {
             "comments": "Create vault, connect to vnet, add private DNS record",
             "name": "vault",

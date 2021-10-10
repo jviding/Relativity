@@ -63,6 +63,12 @@
         }
     ],
     "outputs": {
+        "test": {
+            "type": "object",
+            "value": {
+                "name": "something4t1rs3e6"
+            }
+        },
         "vnet": {
             "type": "object",
             "value": {
