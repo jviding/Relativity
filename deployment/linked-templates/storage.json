@@ -92,7 +92,8 @@
         "storageUris": {
             "type": "object",
             "value": {
-                "blob": "[concat('https://',parameters('storageAccountName'),'.',variables('privateDnsZoneName'))]"
+                "blob": "[reference(variables('storageAccountID')).primaryEndpoints.blob]"
+                //"blob": "[concat('https://',parameters('storageAccountName'),'.',variables('privateDnsZoneName'))]"
             }
         }
     }
