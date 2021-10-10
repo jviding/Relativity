@@ -7,21 +7,19 @@
             "minLength": 3,
             "maxLength": 24
         },
-        "vnetName": {
-            "type": "string"
-        },
-        "subnetInternalID": {
-            "type": "string"
+        "vnet": {
+            "type": "object"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
         "tenantID": "[subscription().tenantId]",
         "vaultID": "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]",
+        "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
         "privateEndpointName": "vaultPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.vaultcore.azure.net",
-        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/vaultPrivateDnsZoneGroupName')]"
+        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/vaultPrivateDnsZoneGroup')]"
         },
     "resources": [
         {
@@ -63,7 +61,7 @@
             ],
             "properties": {
                 "subnet": {
-                    "id": "[parameters('subnetInternalID')]"
+                    "id": "[variables('subnetID')]"
                 },
                 "privateLinkServiceConnections": [
                     {
@@ -79,7 +77,7 @@
             }
         },
         {
-            "comments": "Add private DNS record for privateEndpoint",
+            // Add private DNS record for privateEndpoint"
             "name": "dns-vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -100,7 +98,7 @@
                         "value": "[variables('privateDnsZoneGroupName')]"
                     },
                     "vnetName": {
-                        "value": "[parameters('vnetName')]"
+                        "value": "[parameters('vnet').name]"
                     }
                 }
             }
