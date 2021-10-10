@@ -30,7 +30,10 @@
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
-            "kind": "StorageV2"
+            "kind": "StorageV2",
+            "properties": {
+                "allowBlobPublicAccess": false
+            }
         },
         {
             "type": "Microsoft.Network/privateEndpoints",
