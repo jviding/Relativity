@@ -15,11 +15,10 @@
         "location": "[resourceGroup().location]",
         "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
         "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
-
         "privateEndpointName": "blobPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.blob.core.windows.net",
-        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/blobPrivateDnsZoneGroupName')]"
+        "privateDnsZoneGroupName": "[concat(variables('privateEndpointName'),'/blobPrivateDnsZoneGroup')]"
     },
     "resources": [
         {
@@ -57,9 +56,9 @@
                     }
                 ]
             }
-        }/*,
+        },
         {
-            "comments": "Add private DNS record for privateEndpoint",
+            // Add private DNS record for private endpoint
             "name": "dns-blob",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -80,16 +79,18 @@
                         "value": "[variables('privateDnsZoneGroupName')]"
                     },
                     "vnetName": {
-                        "value": "[parameters('vnetName')]"
+                        "value": "[parameters('vnet').name]"
                     }
                 }
             }
-        }*/
+        }
     ],
     "outputs": {
-        "blobDiagnosticsUri": {
-            "type": "string",
-            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))).primaryEndpoints.blob]"
+        "storageUris": {
+            "type": "object",
+            "value": {
+                "blob": "[reference(resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))).primaryEndpoints.blob]"
+            }
         }
     }
 }

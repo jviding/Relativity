@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "bastionVmAdminUsername": {
+        "storageAccountName": {
             "type": "string"
         },
-        "storageAccountName": {
+        "bastionVmAdminUsername": {
             "type": "string"
         },
         "vaultName": {
@@ -50,8 +50,8 @@
             }
         },
         {
-            // Create storage account 
-            // Create private endpoint and connect blob storage to network
+            // Create storage account
+            // Create private endpoint: blob storage <-> vnet
             // Create private DNS record
             "name": "storage",
             "type": "Microsoft.Resources/deployments",
@@ -69,7 +69,7 @@
                         "value": "[parameters('storageAccountName')]"
                     },
                     "vnet": {
-                        "value": "[reference('networks').outputs.test.value]"
+                        "value": "[reference('networks').outputs.vnet.value]"
                     }
                 }
             }
