@@ -69,7 +69,7 @@
                         "value": "[parameters('storageAccountName')]"
                     },
                     "vnet": {
-                        "value": "[reference('networks').outputs.test]"
+                        "value": "[reference('networks').outputs.test.value]"
                     }
                 }
             }
