@@ -92,7 +92,7 @@
         "storageUris": {
             "type": "object",
             "value": {
-                "blob": "[reference(resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))).primaryEndpoints.blob]"
+                "blob": "[concat('https://',parameters('storageAccountName'),'.',variables('privateDnsZoneName'))]"
             }
         }
     }
