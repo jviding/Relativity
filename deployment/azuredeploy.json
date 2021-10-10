@@ -50,32 +50,6 @@
             }
         },
         {
-            // Create storage account
-            // Create private endpoint: blob storage <-> vnet
-            // Create private DNS record
-            "name": "storage",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "dependsOn": [
-                "[variables('deploymentIdentitiesID')]",
-                "[variables('deploymentNetworksID')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "relativePath": "linked-templates/storage.json"
-                },
-                "parameters": {
-                    "storageAccountName": {
-                        "value": "[parameters('storageAccountName')]"
-                    },
-                    "vnet": {
-                        "value": "[reference('networks').outputs.vnet.value]"
-                    }
-                }
-            }
-        },
-        {
             // Create vault
             // Create private endpoint: vault <-> vnet
             // Create private DNS record
@@ -94,6 +68,32 @@
                 "parameters": {
                     "vaultName": {
                         "value": "[parameters('vaultName')]"
+                    },
+                    "vnet": {
+                        "value": "[reference('networks').outputs.vnet.value]"
+                    }
+                }
+            }
+        },
+        {
+            // Create storage account
+            // Create private endpoint: blob storage <-> vnet
+            // Create private DNS record
+            "name": "storage",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[variables('deploymentIdentitiesID')]",
+                "[variables('deploymentNetworksID')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/storage.json"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
                     },
                     "vnet": {
                         "value": "[reference('networks').outputs.vnet.value]"
