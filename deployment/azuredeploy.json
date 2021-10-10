@@ -156,15 +156,17 @@
                     }
                 }
             }
-        }/*,
+        },
         {
-            "comments": "Create appGateway",
+            // Create application gateway
+            // - in subnetPublicAppGw
+            // - with public IP address
             "name": "gateway",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
-                "[variables('identitiesID')]",
-                "[variables('networksID')]"
+                "[variables('deploymentIdentitiesID')]",
+                "[variables('deploymentNetworksID')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -172,15 +174,15 @@
                     "relativePath": "linked-templates/gateway.json"
                 },
                 "parameters": {
-                    "identityAppGwID": {
-                        "value": "[reference('identities').outputs.identityAppGwID.value]"
+                    "identityAppGw": {
+                        "value": "[reference('identities').outputs.userAssignedIdentities.value.identityAppGw]"
                     },
-                    "subnetAppGwID": {
-                        "value": "[reference('networks').outputs.subnetAppGwID.value]"
+                    "vnet": {
+                        "value": "[reference('networks').outputs.vnet.value]"
                     }
                 }
             }
-        },
+        }/*,
         {
             "comments": "Create managed cluster",
             "name": "cluster",

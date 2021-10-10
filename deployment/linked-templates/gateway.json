@@ -2,15 +2,18 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "identityAppGwID": {
-            "type": "string"
+        "identityAppGw": {
+            "type": "object"
         },
-        "subnetAppGwID": {
-            "type": "string"
+        "vnet": {
+            "type": "object"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
+        "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPublicAppGw.name)]",
+        "identityAppGwID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('identityAppGw').name)]",
+
         "publicIpAddressName": "appGwPublicIpAddress",
         "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
         "appGwName": "appGw",
@@ -49,7 +52,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[parameters('identityAppGwID')]": {}
+                    "[variables('identityAppGwID')]": {}
                 }
             },
             "properties": {
@@ -67,7 +70,7 @@
                         "name": "appGwIpConfig",
                         "properties": {
                             "subnet": {
-                                "id": "[parameters('subnetAppGwID')]"
+                                "id": "[variables('subnetID')]"
                             }
                         }
                     }
@@ -155,9 +158,11 @@
         }
     ],
     "outputs": {
-        "appGwID": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))]"
+        "appGw": {
+            "type": "object",
+            "value": {
+                "name": "[variables('appGwName')]"
+            }
         }
     }
 }
