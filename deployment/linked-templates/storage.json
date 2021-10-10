@@ -93,7 +93,6 @@
             "type": "object",
             "value": {
                 "blob": "[reference(variables('storageAccountID')).primaryEndpoints.blob]"
-                //"blob": "[concat('https://',parameters('storageAccountName'),'.',variables('privateDnsZoneName'))]"
             }
         }
     }
