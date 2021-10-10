@@ -131,7 +131,7 @@
                         "value": "[reference('networks').outputs.vnet.value]"
                     },
                     "blobUri": {
-                        "value": "[reference('storage').outputs.storageUris.blob]"
+                        "value": "[reference('storage').outputs.storageUris.value.blob]"
                     }
                 }
             }            
