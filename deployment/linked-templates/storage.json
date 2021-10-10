@@ -12,10 +12,10 @@
         }
     },
     "variables": {
-        "test": "[parameters('vnet').name]",
-
         "location": "[resourceGroup().location]",
         "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]",
+        "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
+
         "privateEndpointName": "blobPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.blob.core.windows.net",
@@ -31,13 +31,8 @@
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
-            "tags": {
-                "tag1": "[variables('test')]",
-                "tag2": "tag2",
-                "asd": "sdf"
-            },
             "kind": "StorageV2"
-        }/*,
+        },
         {
             "type": "Microsoft.Network/privateEndpoints",
             "apiVersion": "2020-11-01",
@@ -48,7 +43,7 @@
             ],
             "properties": {
                 "subnet": {
-                    "id": "[parameters('subnetInternalID')]"
+                    "id": "[variables('subnetID')]"
                 },
                 "privateLinkServiceConnections": [
                     {
@@ -62,7 +57,7 @@
                     }
                 ]
             }
-        },
+        }/*,
         {
             "comments": "Add private DNS record for privateEndpoint",
             "name": "dns-blob",
