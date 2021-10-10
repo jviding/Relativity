@@ -51,8 +51,8 @@
         },
         {
             // Create vault
-            // Create private endpoint: vault <-> vnet
-            // Create private DNS record
+            // Create private endpoint: vault <-> subnetPrivateInternal
+            // Create private DNS record, publish to vnet
             "name": "vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -77,8 +77,8 @@
         },
         {
             // Create storage account
-            // Create private endpoint: blob storage <-> vnet
-            // Create private DNS record
+            // Create private endpoint: blob storage <-> subnetPrivateInternal
+            // Create private DNS record, publish to vnet
             "name": "storage",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -100,6 +100,41 @@
                     }
                 }
             }
+        },
+        {
+            // Create bastion
+            // - in subnetPublicBastion
+            // - with public IP address
+            // Create virtual machine
+            // - with network interface
+            // - in subnetPrivateInternal
+            // - store boot diagnostics to blob storage
+            "name": "bastion",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2021-04-01",
+            "dependsOn": [
+                "[variables('deploymentIdentitiesID')]",
+                "[variables('deploymentNetworksID')]",
+                "[variables('deploymentVaultID')]",
+                "[variables('deploymentStorageID')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "relativePath": "linked-templates/bastion.json"
+                },
+                "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('bastionVmAdminUsername')]"
+                    },
+                    "vnet": {
+                        "value": "[reference('networks').outputs.vnet.value]"
+                    },
+                    "blobUri": {
+                        "value": "[reference('storage').outputs.storageUris.blob]"
+                    }
+                }
+            }            
         }/*,
         {
             "comments": "Create appGateway",
@@ -126,36 +161,7 @@
                 }
             }
         },
-        {
-            "comments": "Create VM, add bastion connection, store boot diagnostics to blob",
-            "name": "bastion",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
-            "dependsOn": [
-                "[variables('networksID')]",
-                "[variables('storageID')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "relativePath": "linked-templates/bastion.json"
-                },
-                "parameters": {
-                    "adminUsername": {
-                        "value": "[parameters('bastionVmAdminUsername')]"
-                    },
-                    "subnetBastionID": {
-                        "value": "[reference('networks').outputs.subnetBastionID.value]"
-                    },
-                    "subnetInternalID": {
-                        "value": "[reference('networks').outputs.subnetInternalID.value]"
-                    },
-                    "blobDiagnosticsUri": {
-                        "value": "[reference('storage').outputs.blobDiagnosticsUri.value]"
-                    }
-                }
-            }            
-        },
+        ,
         {
             "comments": "Create registry, connect to vnet, add private DNS record",
             "name": "registry",

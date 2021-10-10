@@ -11,28 +11,27 @@
             "type": "securestring",
             "defaultValue": "[newGuid()]"
         },
-        "subnetBastionID": {
-            "type": "string"
+        "vnet": {
+            "type": "object"
         },
-        "subnetInternalID": {
-            "type": "string"
-        },
-        "blobDiagnosticsUri": {
+        "blobUri": {
             "type": "string"
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
+        "subnetPublicBastionID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPublicBastion.name)]",
+        "subnetPrivateInternalID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
         "publicIpAddressName": "bastionPublicIpAddress",
+        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
         "hostName": "bastionHost",
         "vmNicName": "bastionVmNic",
+        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]",
         "vmName": "bastionVm",
         "vmConfiguration": {
             "disablePasswordAuthentication": false,
             "provisionVMAgent": true
-        },
-        "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
-        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]"
+        }
     },
     "resources": [
         {
@@ -61,7 +60,7 @@
                         "name": "ipConfigurations",
                         "properties": {
                             "subnet": {
-                                "id": "[parameters('subnetBastionID')]"
+                                "id": "[variables('subnetPublicBastionID')]"
                             },
                             "publicIPAddress": {
                                 "id": "[variables('publicIpAddressID')]"
@@ -83,7 +82,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
-                                "id": "[parameters('subnetInternalID')]"
+                                "id": "[variables('subnetPrivateInternalID')]"
                             }
                         }
                     }
@@ -138,7 +137,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[parameters('blobDiagnosticsUri')]"
+                        "storageUri": "[parameters('blobUri')]"
                     }
                 }
             }
