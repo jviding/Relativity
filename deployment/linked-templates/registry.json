@@ -8,7 +8,7 @@
             "maxLength": 24
         },
         "vnet": {
-            "type": "string"
+            "type": "object"
         }
     },
     "variables": {
