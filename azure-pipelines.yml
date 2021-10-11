@@ -24,13 +24,14 @@ steps:
     echo "Hello!"
     ls /tmp/.keys/
     # cat /tmp/.keys/id_rsa.pub
+    echo "Key:"
     echo $KEY
     echo "World..."
     #echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
     #echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
     # echo "##vso[task.setvariable variable=test]$(echo 'asdSome')" Tämä toimii
-    echo "##vso[task.setvariable variable=test]${PUBLIC_KEY}"
+    echo "##vso[task.setvariable variable=test]ssh-rsa axxxb jasu@jasu"
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
   failOnStderr: true
