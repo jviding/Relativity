@@ -20,7 +20,7 @@ steps:
     echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
     echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     rm -rf /tmpfs/.keys/
-  displayName: 'KeyGenerator'
+  name: 'KeyGenerator'
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
@@ -32,6 +32,6 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
-    overrideParameters: '-sshPrivKeyCluster $(sshPubKeyCluster) -sshPubKeyCluster $(KeyGenerator.sshPubKeyCluster)'
+    overrideParameters: '-sshPubKey $(sshPubKeyCluster) -sshPubKeyCluster $(KeyGenerator.sshPubKeyCluster)'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
