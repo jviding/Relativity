@@ -5,7 +5,9 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "identityAppGwName": "appGwIdentity",
+        "identityAppGwID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]",
         "identityClusterName": "clusterIdentity",
+        "identityClusterID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]",
         "identityNames": [
             "[variables('identityAppGwName')]",
             "[variables('identityClusterName')]"
@@ -29,11 +31,15 @@
             "value": {
                 "identityAppGw": {
                     "name": "[variables('identityAppGwName')]",
-                    "id": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]"
+                    "id": "[variables('identityAppGwID')]",
+                    "clientId": "[reference(variables('identityAppGwID')).clientId]",
+                    "principalId": "[reference(variables('identityAppGwID')).principalId]"
                 },
                 "identityCluster": {
                     "name": "[variables('identityClusterName')]",
-                    "id": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"
+                    "id": "[variables('identityClusterID')]",
+                    "clientId": "[reference(variables('identityClusterID')).clientId]",
+                    "principalId": "[reference(variables('identityClusterID')).principalId]"
                 }
             }
         }
