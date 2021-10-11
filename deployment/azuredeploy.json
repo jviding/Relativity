@@ -13,6 +13,14 @@
         },
         "registryName": {
             "type": "string"
+        },
+        "sshPrivKeyCluster": {
+            "type": "securestring",
+            "defaultValue": ""
+        },
+        "sshPubKeyCluster": {
+            "type": "securestring",
+            "defaultValue": ""
         }
     },
     "functions": [],
