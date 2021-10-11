@@ -23,6 +23,7 @@ steps:
     echo "##vso[task.setvariable variable=test]$(cat /tmp/.keys/id_rsa.pub)"
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
+  failOnStderr: true
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
