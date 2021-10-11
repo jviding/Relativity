@@ -5,7 +5,7 @@
         "identityAppGw": {
             "type": "object"
         },
-        "vnet": {
+        "subnetAppGw": {
             "type": "object"
         }
     },
@@ -67,7 +67,7 @@
                         "name": "appGwIpConfig",
                         "properties": {
                             "subnet": {
-                                "id": "[parameters('vnet').subnets.subnetPublicAppGw.id]"
+                                "id": "[parameters('subnetAppGw').id]"
                             }
                         }
                     }
