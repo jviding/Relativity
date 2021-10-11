@@ -183,9 +183,10 @@
                     }
                 }
             }
-        }/*,
+        },
         {
             // Create managed cluster
+            // - with appGw as ingress
             "name": "cluster",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -205,18 +206,15 @@
                     "userAssignedIdentities": {
                         "value": "[reference('identities').outputs.userAssignedIdentities.value]"
                     },
-                    "identityAppGwID": {
-                        "value": "[reference('identities').outputs.identityAppGwID.value]"
+                    "appGw": {
+                        "value": "[reference('gateway').outputs.appGw.value]"
                     },
-                    "appGwID": {
-                        "value": "[reference('gateway').outputs.appGwID.value]"
-                    },
-                    "vnet": {
-                        "value": "[reference('networks').outputs.vnet.value]"
+                    "subnetCluster": {
+                        "value": "[reference('networks').outputs.vnet.value.subnets.subnetPrivateCluster]"
                     }
                 }
             }
-        }*/
+        }
     ],
     "outputs": {}
 }

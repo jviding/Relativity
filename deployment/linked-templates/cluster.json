@@ -2,23 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "identityClusterID": {
-            "type": "string"
+        "userAssignedIdentities": {
+            "type": "object"
         },
-        "identityAppGwID": {
-            "type": "string"
+        "appGw": {
+            "type": "object"
         },
-        "appGwID": {
-            "type": "string"
-        },
-        "appGwClientID": {
-            "type": "string"
-        },
-        "appGwPrincipalID": {
-            "type": "string"
-        },
-        "subnetClusterID": {
-            "type": "string"
+        "subnetCluster": {
+            "type": "object"
         }
     },
     "variables": {
@@ -43,7 +34,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[parameters('identityClusterID')]": {}
+                    "[parameters('userAssignedIdentities').identityCluster.id]": {}
                 }
             },
             "properties": {
@@ -58,7 +49,7 @@
                         "vmSize": "Standard_A1_v2",
                         "osType": "Linux",
                         "osDiskSizeGB": 4,
-                        "vnetSubnetID": "[parameters('subnetClusterID')]",
+                        "vnetSubnetID": "[parameters('subnetCluster').id]",
                         "enableNodePublicIP": false,
                         "maxPods": 10,
                         "scaleSetPriority": "Regular",
@@ -78,7 +69,7 @@
                         "vmSize": "Standard_A1_v2",
                         "osType": "Linux",
                         "osDiskSizeGB": 4,
-                        "vnetSubnetID": "[parameters('subnetClusterID')]",
+                        "vnetSubnetID": "[parameters('subnetCluster').id]",
                         "enableNodePublicIP": false,
                         "maxPods": 10,
                         "scaleSetPriority": "Regular",
@@ -123,12 +114,12 @@
                     "ingressApplicationGateway": {
                         "enabled": true,
                         "config": {
-                            "applicationGatewayId": "[parameters('appGwID')]"
+                            "applicationGatewayId": "[parameters('appGw').id]"
                         },
                         "identity": {
-                            "clientId": "[parameters('appGwClientID')]",
-                            "objectId": "[parameters('appGwPrincipalID')]",
-                            "resourceId": "[parameters('identityAppGwID')]"
+                            "clientId": "[parameters('userAssignedIdentities').identityAppGw.clientId]",
+                            "objectId": "[parameters('userAssignedIdentities').identityAppGw.principalId]",
+                            "resourceId": "[parameters('userAssignedIdentities').identityAppGw.id]"
                         }
                     }
                 },

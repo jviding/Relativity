@@ -158,7 +158,8 @@
         "appGw": {
             "type": "object",
             "value": {
-                "name": "[variables('appGwName')]"
+                "name": "[variables('appGwName')]",
+                "id": "[resourceId('Microsoft.Network/applicationGateways',variables('appGwName'))]"
             }
         }
     }
