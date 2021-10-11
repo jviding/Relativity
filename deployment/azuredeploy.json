@@ -19,10 +19,10 @@
     "variables": {
         "deploymentIdentitiesID": "[resourceId('Microsoft.Resources/deployments','identities')]",
         "deploymentNetworksID": "[resourceId('Microsoft.Resources/deployments','networks')]",
-        "deploymentStorageID": "[resourceId('Microsoft.Resources/deployments','storage')]",
         "deploymentVaultID": "[resourceId('Microsoft.Resources/deployments','vault')]",
-        "deploymentGatewayID": "[resourceId('Microsoft.Resources/deployments','gateway')]",
-        "deploymentRegistryID": "[resourceId('Microsoft.Resources/deployments','registry')]"
+        "deploymentStorageID": "[resourceId('Microsoft.Resources/deployments','storage')]",
+        "deploymentRegistryID": "[resourceId('Microsoft.Resources/deployments','registry')]",
+        "deploymentGatewayID": "[resourceId('Microsoft.Resources/deployments','gateway')]"
     },
     "resources": [
         {
@@ -161,6 +161,7 @@
             // Create application gateway
             // - in subnetPublicAppGw
             // - with public IP address
+            // - with user assigned identity
             "name": "gateway",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -177,23 +178,23 @@
                     "identityAppGw": {
                         "value": "[reference('identities').outputs.userAssignedIdentities.value.identityAppGw]"
                     },
-                    "vnet": {
-                        "value": "[reference('networks').outputs.vnet.value]"
+                    "subnetAppGw": {
+                        "value": "[reference('networks').outputs.vnet.value.subnets.subnetPublicAppGw]"
                     }
                 }
             }
         }/*,
         {
-            "comments": "Create managed cluster",
+            // Create managed cluster
             "name": "cluster",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
             "dependsOn": [
-                "[variables('identitiesID')]",
-                "[variables('networksID')]",
-                "[variables('vaultID')]",
-                "[variables('gatewayID')]",
-                "[variables('registryID')]"
+                "[variables('deploymentIdentitiesID')]",
+                "[variables('deploymentNetworksID')]",
+                "[variables('deploymentVaultID')]",
+                "[variables('deploymentRegistryID')]",
+                "[variables('deploymentGatewayID')]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -201,8 +202,8 @@
                     "relativePath": "linked-templates/cluster.json"
                 },
                 "parameters": {
-                    "identityClusterID": {
-                        "value": "[reference('identities').outputs.identityClusterID.value]"
+                    "userAssignedIdentities": {
+                        "value": "[reference('identities').outputs.userAssignedIdentities.value]"
                     },
                     "identityAppGwID": {
                         "value": "[reference('identities').outputs.identityAppGwID.value]"
@@ -210,14 +211,8 @@
                     "appGwID": {
                         "value": "[reference('gateway').outputs.appGwID.value]"
                     },
-                    "appGwClientID": {
-                        "value": "[reference('identities').outputs.appGwClientID]"
-                    },
-                    "appGwPrincipalID": {
-                        "value": "[reference('identities').outputs.appGwPrincipalID]"
-                    },
-                    "subnetClusterID": {
-                        "value": "[reference('networks').outputs.subnetClusterID.value]"
+                    "vnet": {
+                        "value": "[reference('networks').outputs.vnet.value]"
                     }
                 }
             }
