@@ -68,11 +68,28 @@
             "value": {
                 "name": "[variables('vnet').name]",
                 "CIDR": "[variables('vnet').CIDR]",
+                "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet').name)]",
                 "subnets": {
-                    "subnetPublicBastion": "[variables('subnetPublicBastion')]",
-                    "subnetPublicAppGw": "[variables('subnetPublicAppGw')]",
-                    "subnetPrivateInternal": "[variables('subnetPrivateInternal')]",
-                    "subnetPrivateCluster": "[variables('subnetPrivateCluster')]"
+                    "subnetPublicBastion": {
+                        "name": "[variables('subnetPublicBastion').name]",
+                        "CIDR": "[variables('subnetPublicBastion').CIDR]",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnet').name,variables('subnetPublicBastion').name)]"
+                    },
+                    "subnetPublicAppGw": {
+                        "name": "[variables('subnetPublicAppGw').name]",
+                        "CIDR": "[variables('subnetPublicAppGw').CIDR]",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnet').name,variables('subnetPublicAppGw').name)]"
+                    },
+                    "subnetPrivateInternal": {
+                        "name": "[variables('subnetPrivateInternal').name]",
+                        "CIDR": "[variables('subnetPrivateInternal').CIDR]",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnet').name,variables('subnetPrivateInternal').name)]"
+                    },
+                    "subnetPrivateCluster": {
+                        "name": "[variables('subnetPrivateCluster').name]",
+                        "CIDR": "[variables('subnetPrivateCluster').CIDR]",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets',variables('vnet').name,variables('subnetPrivateCluster').name)]"
+                    }
                 }
             }
         }
