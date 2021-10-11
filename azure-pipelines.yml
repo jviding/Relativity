@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- name: test
+  value: "testValue"
+
 steps:  
 - bash: |
     mkdir /tmp/.keys/
@@ -28,6 +32,6 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
-    overrideParameters: '-sshPrivKeyCluster $(sshPrivKeyCluster) -sshPubKeyCluster $(sshPubKeyCluster)'
+    overrideParameters: '-sshPrivKeyCluster $(sshPrivKeyCluster) -sshPubKeyCluster $(test)'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
