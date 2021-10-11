@@ -11,9 +11,6 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPublicAppGw.name)]",
-        "identityAppGwID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('identityAppGw').name)]",
-
         "publicIpAddressName": "appGwPublicIpAddress",
         "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
         "appGwName": "appGw",
@@ -52,7 +49,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[variables('identityAppGwID')]": {}
+                    "[parameters('identityAppGw').id]": {}
                 }
             },
             "properties": {
@@ -70,7 +67,7 @@
                         "name": "appGwIpConfig",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetID')]"
+                                "id": "[parameters('vnet').subnets.subnetPublicAppGw.id]"
                             }
                         }
                     }
