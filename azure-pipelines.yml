@@ -31,7 +31,7 @@ steps:
     #echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
     # echo "##vso[task.setvariable variable=test]$(echo 'asdSome')" Tämä toimii
-    echo "##vso[task.setvariable variable=test]ssh-rsa axxxb jasu@jasu"
+    echo "##vso[task.setvariable variable=test]ssh-rsa"
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
   failOnStderr: true
