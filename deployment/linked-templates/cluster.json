@@ -78,7 +78,7 @@
                     "ssh": {
                         "publicKeys": [
                             {
-                                "keyData": "[parameters('sshPubKeyCluster')]"
+                                "keyData": "[parameters('sshPubKey')]"
                             }
                         ]
                     }
