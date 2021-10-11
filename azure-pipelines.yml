@@ -20,6 +20,7 @@ steps:
     echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
     echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
+    echo '##vso[task.setvariable variable=test]testSuccess'
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
 - task: AzureResourceManagerTemplateDeployment@3
