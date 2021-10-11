@@ -11,7 +11,7 @@
         "subnetCluster": {
             "type": "object"
         },
-        "sshPubKeyCluster": {
+        "sshPubKey": {
             "type": "string"
         }
     },
