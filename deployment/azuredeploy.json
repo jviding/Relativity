@@ -235,6 +235,10 @@
         "sshKey": {
             "type": "string",
             "value": "[parameters('sshPubKeyCluster')]"
+        },
+        "else": {
+            "type": "string",
+            "value": "[parameters('vaultName')]"
         }
     }
 }
