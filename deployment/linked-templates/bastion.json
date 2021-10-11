@@ -20,8 +20,6 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "subnetPublicBastionID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPublicBastion.name)]",
-        "subnetPrivateInternalID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
         "publicIpAddressName": "bastionPublicIpAddress",
         "publicIpAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpAddressName'))]",
         "hostName": "bastionHost",
@@ -60,7 +58,7 @@
                         "name": "ipConfigurations",
                         "properties": {
                             "subnet": {
-                                "id": "[variables('subnetPublicBastionID')]"
+                                "id": "[parameters('vnet').subnets.subnetPublicBastion.id]"
                             },
                             "publicIPAddress": {
                                 "id": "[variables('publicIpAddressID')]"
@@ -82,7 +80,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
-                                "id": "[variables('subnetPrivateInternalID')]"
+                                "id": "[parameters('vnet').subnets.subnetPrivateInternal.id]"
                             }
                         }
                     }
