@@ -19,7 +19,7 @@
         "clusterServiceCIDR": "10.11.0.0/16",
         "clusterDnsServiceIP": "10.11.0.5",
         "clusterDockerBridgeCIDR": "172.17.0.0/16",
-        "kubernetesVersion": "1.20"
+        "kubernetesVersion": "1.21.1"
     },
     "resources": [
         {
