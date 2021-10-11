@@ -20,7 +20,10 @@ steps:
     echo -e "textFromFile" > /tmp/.keys/file
     PRIVATE_KEY=$(cat /tmp/.keys/id_rsa)
     PUBLIC_KEY=$(cat /tmp/.keys/file)
-    echo "\nHello!\n"
+    echo "Hello!"
+    ls /tmp/.keys/
+    cat /tmp/.keys/id_rsa.pub
+    echo "World..."
     #echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
     #echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
