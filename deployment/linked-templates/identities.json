@@ -28,10 +28,12 @@
             "type": "object",
             "value": {
                 "identityAppGw": {
-                    "name": "[variables('identityAppGwName')]"
+                    "name": "[variables('identityAppGwName')]",
+                    "id": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityAppGwName'))]"
                 },
                 "identityCluster": {
-                    "name": "[variables('identityClusterName')]"
+                    "name": "[variables('identityClusterName')]",
+                    "id": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('identityClusterName'))]"
                 }
             }
         }
