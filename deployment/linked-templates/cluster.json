@@ -19,7 +19,12 @@
         "clusterServiceCIDR": "10.11.0.0/16",
         "clusterDnsServiceIP": "10.11.0.5",
         "clusterDockerBridgeCIDR": "172.17.0.0/16",
-        "kubernetesVersion": "1.21.1"
+        "kubernetesVersion": "1.21.1",
+        "orchestratorVersion": "1.20",
+        "agentPoolProfileNames": [
+            "System",
+            "User"
+        ]
     },
     "resources": [
         {
@@ -40,46 +45,30 @@
             "properties": {
                 "kubernetesVersion": "[variables('kubernetesVersion')]",
                 "dnsPrefix": "[variables('clusterName')]",
-                "agentPoolProfiles": [
+                "copy": [
                     {
-                        "name": "system",
-                        "count": 3,
-                        "minCount": 3,
-                        "maxCount": 5,
-                        "vmSize": "Standard_A1_v2",
-                        "osType": "Linux",
-                        "osDiskSizeGB": 4,
-                        "vnetSubnetID": "[parameters('subnetCluster').id]",
-                        "enableNodePublicIP": false,
-                        "maxPods": 10,
-                        "scaleSetPriority": "Regular",
-                        "scaleSetEvictionPolicy": "Delete",
-                        "enableAutoScaling": true,
-                        "mode": "System",
-                        "type": "VirtualMachineScaleSets",
-                        "availabilityZones": [],
-                        "nodeLabels": {},
-                        "nodeTaints": []                        
-                    },
-                    {
-                        "name": "user",
-                        "count": 3,
-                        "minCount": 3,
-                        "maxCount": 5,
-                        "vmSize": "Standard_A1_v2",
-                        "osType": "Linux",
-                        "osDiskSizeGB": 4,
-                        "vnetSubnetID": "[parameters('subnetCluster').id]",
-                        "enableNodePublicIP": false,
-                        "maxPods": 10,
-                        "scaleSetPriority": "Regular",
-                        "scaleSetEvictionPolicy": "Delete",
-                        "enableAutoScaling": true,
-                        "mode": "User",
-                        "type": "VirtualMachineScaleSets",
-                        "availabilityZones": [],
-                        "nodeLabels": {},
-                        "nodeTaints": []                        
+                        "name": "agentPoolProfiles",
+                        "count": "[length(variables('agentPoolProfileNames'))]",
+                        "input": {
+                            "name": "[variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')]]",
+                            "count": 3,
+                            "minCount": 3,
+                            "maxCount": 5,
+                            "vmSize": "Standard_A1_v2",
+                            "osType": "Linux",
+                            "osDiskSizeGB": 4,
+                            "vnetSubnetID": "[parameters('subnetCluster').id]",
+                            "enableNodePublicIP": false,
+                            "maxPods": 10,
+                            "scaleSetPriority": "Regular",
+                            "scaleSetEvictionPolicy": "Delete",
+                            "enableAutoScaling": true,
+                            "mode": "[variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')]]",
+                            "type": "VirtualMachineScaleSets",
+                            "availabilityZones": [],
+                            "nodeLabels": {},
+                            "nodeTaints": [] 
+                        }
                     }
                 ],
                 "linuxProfile": {
