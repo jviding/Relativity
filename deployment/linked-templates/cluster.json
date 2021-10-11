@@ -23,10 +23,7 @@
         "clusterDnsServiceIP": "10.11.0.5",
         "clusterDockerBridgeCIDR": "172.17.0.0/16",
         "kubernetesVersion": "1.21.1",
-        "agentPoolProfileNames": [
-            "System",
-            "User"
-        ]
+        "agentPoolProfileNames": ["System","User"]
     },
     "resources": [
         {
@@ -52,7 +49,7 @@
                         "name": "agentPoolProfiles",
                         "count": "[length(variables('agentPoolProfileNames'))]",
                         "input": {
-                            "name": "[variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')]]",
+                            "name": "[toLower(variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')])]",
                             "count": 3,
                             "minCount": 3,
                             "maxCount": 5,

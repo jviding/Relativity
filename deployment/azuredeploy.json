@@ -19,7 +19,7 @@
             "defaultValue": ""
         },
         "sshPubKeyCluster": {
-            "type": "securestring",
+            "type": "string",
             "defaultValue": ""
         },
         "sshPubKey": {
@@ -37,7 +37,7 @@
         "deploymentGatewayID": "[resourceId('Microsoft.Resources/deployments','gateway')]"
     },
     "resources": [
-        {
+        /*{
             // Create user assigned identities
             "name": "identities",
             "type": "Microsoft.Resources/deployments",
@@ -229,7 +229,12 @@
                     }
                 }
             }
-        }
+        }*/
     ],
-    "outputs": {}
+    "outputs": {
+        "sshKey": {
+            "type": "string",
+            "value": "[parameters('sshPubKeyCluster')]"
+        }
+    }
 }
