@@ -15,7 +15,6 @@
         "location": "[resourceGroup().location]",
         "tenantID": "[subscription().tenantId]",
         "vaultID": "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]",
-        "subnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnet').name,parameters('vnet').subnets.subnetPrivateInternal.name)]",
         "privateEndpointName": "vaultPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.vaultcore.azure.net",
@@ -61,7 +60,7 @@
             ],
             "properties": {
                 "subnet": {
-                    "id": "[variables('subnetID')]"
+                    "id": "[parameters('vnet').subnets.subnetPrivateInternal.id]"
                 },
                 "privateLinkServiceConnections": [
                     {
