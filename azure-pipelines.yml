@@ -33,6 +33,6 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
-    overrideParameters: '-sshPubKey $(test) -sshPubKeyCluster $(KeyGenerator.sshPubKeyCluster)'
+    overrideParameters: '-sshPrivKeyCluster $(test) -sshPubKeyCluster $(sshPubKeyCluster) -sshPubKey $(test)'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
