@@ -10,6 +10,9 @@
         },
         "subnetCluster": {
             "type": "object"
+        },
+        "sshPubKeyCluster": {
+            "type": "string"
         }
     },
     "variables": {
@@ -71,11 +74,11 @@
                     }
                 ],
                 "linuxProfile": {
-                    "adminUsername": "clusterAdmin",
+                    "adminUsername": "clusteradmin",
                     "ssh": {
                         "publicKeys": [
                             {
-                                "keyData": ""
+                                "keyData": "[parameters('sshPubKeyCluster')]"
                             }
                         ]
                     }

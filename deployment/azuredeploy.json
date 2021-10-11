@@ -219,6 +219,9 @@
                     },
                     "subnetCluster": {
                         "value": "[reference('networks').outputs.vnet.value.subnets.subnetPrivateCluster]"
+                    },
+                    "sshPubKey": {
+                        "value": "[parameters('sshPubKeyCluster')]"
                     }
                 }
             }
