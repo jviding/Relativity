@@ -50,9 +50,9 @@
                         "count": "[length(variables('agentPoolProfileNames'))]",
                         "input": {
                             "name": "[toLower(variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')])]",
-                            "count": 3,
-                            "minCount": 3,
-                            "maxCount": 5,
+                            "count": 1,
+                            "minCount": 1,
+                            "maxCount": 1,
                             "vmSize": "Standard_A2_v2",
                             "osType": "Linux",
                             "osDiskSizeGB": 32,
