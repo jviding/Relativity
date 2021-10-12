@@ -33,7 +33,7 @@
             "location": "[variables('location')]",
             "sku": {
                 "name": "Basic",
-                "tier": "Paid"
+                "tier": "Free"
             },
             "identity": {
                 "type": "UserAssigned",
@@ -50,10 +50,10 @@
                         "count": "[length(variables('agentPoolProfileNames'))]",
                         "input": {
                             "name": "[toLower(variables('agentPoolProfileNames')[copyIndex('agentPoolProfiles')])]",
-                            "count": 3,
-                            "minCount": 3,
-                            "maxCount": 5,
-                            "vmSize": "Standard_D16s_v3", //"Standard_A8_v2",
+                            "count": 1,
+                            "minCount": 1,
+                            "maxCount": 1,
+                            "vmSize": "Standard_A4_v2", //"Standard_A8_v2",
                             "osType": "Linux",
                             "osDiskSizeGB": 32,
                             "vnetSubnetID": "[parameters('subnetCluster').id]",
