@@ -58,7 +58,7 @@
                             "osDiskSizeGB": 32,
                             "vnetSubnetID": "[parameters('subnetCluster').id]",
                             "enableNodePublicIP": false,
-                            "maxPods": 10,
+                            "maxPods": 110,
                             "scaleSetPriority": "Regular",
                             "scaleSetEvictionPolicy": "Delete",
                             "enableAutoScaling": true,
