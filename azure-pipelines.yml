@@ -12,6 +12,7 @@ steps:
     PUBLIC_KEY_BASE64=$(cat /tmp/.keys/id_rsa.pub | base64)
     echo "##vso[task.setvariable variable=privKeyBase64;issecret=true;isreadonly=true]${PRIVATE_KEY_BASE64}"
     echo "##vso[task.setvariable variable=pubKeyBase64;isreadonly=true]${PUBLIC_KEY_BASE64}"
+    echo $PUBLIC_KEY_BASE64
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
   failOnStderr: true
