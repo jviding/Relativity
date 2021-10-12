@@ -33,7 +33,7 @@
             "location": "[variables('location')]",
             "sku": {
                 "name": "Basic",
-                "tier": "Free"
+                "tier": "Paid"
             },
             "identity": {
                 "type": "UserAssigned",
