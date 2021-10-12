@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -14,7 +9,7 @@ steps:
     mkdir /tmp/.keys/
     ssh-keygen -m PEM -t rsa -b 4096 -C 'jasu@jasu' -N '' -f /tmp/.keys/id_rsa
     PRIVATE_KEY_BASE64=$(cat /tmp/.keys/id_rsa | base64)
-    PUBLIC_KEY_BASE64=$(cat /tmp/.keys/file | base64)
+    PUBLIC_KEY_BASE64=$(cat /tmp/.keys/id_rsa.pub | base64)
     #echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
     #echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
     #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
