@@ -55,7 +55,7 @@
                             "maxCount": 5,
                             "vmSize": "Standard_A2_v2",
                             "osType": "Linux",
-                            "osDiskSizeGB": 4,
+                            "osDiskSizeGB": 30,
                             "vnetSubnetID": "[parameters('subnetCluster').id]",
                             "enableNodePublicIP": false,
                             "maxPods": 10,
