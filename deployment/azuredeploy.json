@@ -14,22 +14,19 @@
         "registryName": {
             "type": "string"
         },
-        "sshPrivKeyCluster": {
-            //"type": "securestring",
-            "type": "string",
-            "defaultValue": "defaultValue"
+        "sshPrivKeyBase64": {
+            "type": "securestring",
+            "defaultValue": ""
         },
-        "sshPubKeyCluster": {
+        "sshPubKeyBase64": {
             "type": "string",
-            "defaultValue": "defaultValue"
-        },
-        "sshPubKey": {
-            "type": "string",
-            "defaultValue": "defaultValue" //"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCvzFqaa5DthfIwlaC8A4bc2OZ0q+B927/xlgN3bxmmehpNNxwh3n1m8CLz4fGLyRB9PLJyD8RejD/lF56ZZh6N2mB9LfY7aM9pJcxuR8rUapOcrwHHVWNQlDECNLbD//c8Ga2AlkhUIJgc9/EFFdrPuw5ecGz9uBQ6IcHWwKVSzZUenTXrwjF5Bhb8DFwhYSvy0NWI+V7RaEAqxrPjMFE/Ip+IT0hkz7EIPaeRAnMTh4RjsWCeFTgiIOXwy2KwGBZz0srmYmZYQzV8LCFj31ofnLMgHNPHu4zcSUgjC9apaZx28QfGuLfPC32TIXg/43aqX/jeh1z8rdsYIT7rvByHYAFpCPf+jqwMpjcmdEinTssaxGqV5j3hlhztzbeWYltNeW0g6e/3krS4MNbkWv8XONcJeLug1+QWyD/1rC0DZ7RyReNSs7D/Tn5pe+Dt8Tqol4jJy/6LrndX2rmTlv7EGiqXqS5pl8dQTdokq5sLzVt6ah0LMK9dDMK/1t2vPQ2UaLr0s4d/pr1TlZj8JKz8SsoeExllTOizHuuROjE1hiBScOp5Xu7cNdB8XeGL1LL1fVxJjmgQlfNMEstOAWTZmyJCtA1zGoENUc+wRu1Ae8Rr6lXXI4jRg6bRmN7aLHhQqABYcEomvEYOovPnYe3O2VAog6nfpRUt/qdTwm3foQ== jasu@jasu"
+            "defaultValue": ""
         }
     },
     "functions": [],
     "variables": {
+        "sshPrivKey": "[base64ToString(parameters('sshPrivKeyBase64'))]",
+        "sshPubKey": "[base64ToString(parameters('sshPubKeyBase64'))]",
         "deploymentIdentitiesID": "[resourceId('Microsoft.Resources/deployments','identities')]",
         "deploymentNetworksID": "[resourceId('Microsoft.Resources/deployments','networks')]",
         "deploymentVaultID": "[resourceId('Microsoft.Resources/deployments','vault')]",
@@ -233,17 +230,9 @@
         }*/
     ],
     "outputs": {
-        "sshPubKeyCluster": {
-            "type": "string",
-            "value": "[parameters('sshPubKeyCluster')]"
-        },
         "sshPubKey": {
             "type": "string",
-            "value": "[parameters('sshPubKey')]"
-        },
-        "else": {
-            "type": "string",
-            "value": "[parameters('vaultName')]"
+            "value": "[variables('sshPubKey')]"
         }
     }
 }
