@@ -10,11 +10,8 @@ steps:
     ssh-keygen -m PEM -t rsa -b 4096 -C 'jasu@jasu' -N '' -f /tmp/.keys/id_rsa
     PRIVATE_KEY_BASE64=$(cat /tmp/.keys/id_rsa | base64)
     PUBLIC_KEY_BASE64=$(cat /tmp/.keys/id_rsa.pub | base64)
-    #echo '##vso[task.setvariable variable=sshPrivKeyCluster;issecret=true;isreadonly=true]'$(cat /tmp/.keys/id_rsa)
-    #echo '##vso[task.setvariable variable=sshPubKeyCluster;isreadonly=true]'$(cat /tmp/.keys/id_rsa.pub)
-    #echo '##vso[task.setvariable variable=test]'$(cat /tmp/.keys/id_rsa.pub)
-    # echo "##vso[task.setvariable variable=test]$(echo 'asdSome')" Tämä toimii
-    echo "##vso[task.setvariable variable=test]novar"
+    echo "##vso[task.setvariable variable=privKeyBase64;issecret=true;isreadonly=true]${PRIVATE_KEY_BASE64}"
+    echo "##vso[task.setvariable variable=pubKeyBase64;isreadonly=true]${PUBLIC_KEY_BASE64}"
     rm -rf /tmpfs/.keys/
   name: 'KeyGenerator'
   failOnStderr: true
@@ -29,6 +26,6 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/jviding/Relativity/main/deployment/azuredeploy.parameters.json'
-    overrideParameters: '-sshPrivKeyCluster asd -sshPubKeyCluster asd -sshPubKey $(test)'
+    overrideParameters: '-sshPrivKeyBase64 $(privKeyBase64) -sshPubKeyBase64 $(pubKeyBase64)'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
