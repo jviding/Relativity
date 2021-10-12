@@ -9,6 +9,9 @@
         },
         "vnet": {
             "type": "object"
+        },
+        "sshPrivKey": {
+            "type": "securestring"
         }
     },
     "variables": {
@@ -48,7 +51,24 @@
                 "enableSoftDelete": true,
                 "softDeleteRetentionInDays": 7,
                 "provisioningState": "Succeeded"
-            }
+            },
+            "resources": [
+                {
+                    "type": "secrets",
+                    "apiVersion": "2021-04-01-preview",
+                    "name": "sshPrivateKey",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]"
+                    ],
+                    "properties": {
+                        "contentType": "string",
+                        "value": "[parameters('sshPrivKey')]",
+                        "attributes": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
         },
         {
             "type": "Microsoft.Network/privateEndpoints",

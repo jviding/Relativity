@@ -80,6 +80,9 @@
                     },
                     "vnet": {
                         "value": "[reference('networks').outputs.vnet.value]"
+                    },
+                    "sshPrivKey": {
+                        "value": "[variables('sshPrivKey')]"
                     }
                 }
             }
