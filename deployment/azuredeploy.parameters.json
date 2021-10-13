@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "value": "storageaccountjviding"
+            "value": "storageaccountjvidingtest"
         },
         "bastionVmAdminUsername": {
-            "value": "jviding"
+            "value": "jvidingtest"
         },
         "vaultName": {
-            "value": "vaultjviding"
+            "value": "vaultjvidingtest"
         },
         "registryName": {
-            "value": "registryjviding"
+            "value": "registryjvidingtest"
         }
     }
 }
