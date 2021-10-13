@@ -21,7 +21,7 @@
         "clusterPodCIDR": "10.10.0.0/16",
         "clusterServiceCIDR": "10.11.0.0/16",
         "clusterDnsServiceIP": "10.11.0.5",
-        "clusterDockerBridgeCIDR": "172.17.0.0/16",
+        "clusterDockerBridgeCIDR": "172.17.0.1/16",
         "kubernetesVersion": "1.21.1",
         "agentPoolProfileNames": ["System","User"]
     },
