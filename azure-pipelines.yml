@@ -18,8 +18,9 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Relativity-conn'
-    subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863'
+    azureResourceManagerConnection: 'Relativity2-conn' # 'Relativity-conn'
+    subscriptionId: '3b192346-fa3b-49ab-9c73-2d2081f08df7' # Trial
+    #subscriptionId: 'bb5683f7-8679-4ecd-a524-71f3a3291863' # Student
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'Relativity-rg'
     location: 'West Europe'
