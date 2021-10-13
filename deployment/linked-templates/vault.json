@@ -57,6 +57,7 @@
                     "type": "secrets",
                     "apiVersion": "2021-04-01-preview",
                     "name": "sshPrivateKey",
+                    "location": "[variables('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]"
                     ],
