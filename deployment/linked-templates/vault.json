@@ -48,8 +48,8 @@
                 "enabledForTemplateDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enableRbacAuthorization": false,
-                "enablePurgeProtection": true,
-                "enableSoftDelete": true,
+                "enablePurgeProtection": false,
+                "enableSoftDelete": false,
                 "softDeleteRetentionInDays": 7,
                 "provisioningState": "Succeeded"
             },
