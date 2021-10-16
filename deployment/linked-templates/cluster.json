@@ -2,24 +2,105 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "userAssignedIdentities": {
+        "adminUsername": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "defaultValue": "[newGuid()]"
+        },
+        "vnet": {
             "type": "object"
         },
-        "appGw": {
-            "type": "object"
-        },
-        "subnetCluster": {
-            "type": "object"
-        },
-        "sshPubKey": {
+        "blobUri": {
             "type": "string"
         }
     },
     "variables": {
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "vmNicName": "clusterVmNic",
+        "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]",
+        "vmName": "clusterVm",
+        "vmConfiguration": {
+            "disablePasswordAuthentication": false,
+            "provisionVMAgent": true
+        }
     },
     "resources": [
-        
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "name": "[variables('vmNicName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipConfigurations",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[parameters('vnet').subnets.subnetPrivateCluster.id]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-03-01",
+            "name": "[variables('vmName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[variables('vmNicID')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_A1_v2"
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]",
+                    "linuxConfiguration": "[variables('vmConfiguration')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "18.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(variables('vmName'), '_OSDisk')]",
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": [
+                        {
+                            "name": "[concat(variables('vmName'), '_DataDisk')]",
+                            "diskSizeGB": 32,
+                            "lun": 0,
+                            "createOption": "Empty"
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[variables('vmNicID')]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[parameters('blobUri')]"
+                    }
+                }
+            }
+        }
     ],
     "outputs": {}
 }
