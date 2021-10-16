@@ -56,7 +56,7 @@
                 {
                     "type": "secrets",
                     "apiVersion": "2021-04-01-preview",
-                    "name": "sshPrivateKey",
+                    "name": "sshPrivateKeyToClusterVm",
                     "location": "[variables('location')]",
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults',parameters('vaultName'))]"
@@ -97,7 +97,7 @@
             }
         },
         {
-            // Add private DNS record for privateEndpoint"
+            // Add private DNS record for privateEndpoint
             "name": "dns-vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
