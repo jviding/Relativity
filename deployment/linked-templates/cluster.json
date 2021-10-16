@@ -9,12 +9,16 @@
         },
         "adminPassword": {
             "type": "securestring",
-            "defaultValue": "[newGuid()]"
+            "defaultValue": "[newGuid()]",
+            "minLength": 12
         },
         "vnet": {
             "type": "object"
         },
         "blobUri": {
+            "type": "string"
+        },
+        "sshPubKey": {
             "type": "string"
         }
     },
@@ -24,8 +28,14 @@
         "vmNicID": "[resourceId('Microsoft.Network/networkInterfaces',variables('vmNicName'))]",
         "vmName": "clusterVm",
         "vmConfiguration": {
-            "disablePasswordAuthentication": false,
-            "provisionVMAgent": true
+            "disablePasswordAuthentication": true,
+            "provisionVMAgent": true,
+            "ssh": {
+                "publicKeys": {
+                    "keyData": "[parameters('sshPubKey')]",
+                    "path": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
+                }
+            }
         }
     },
     "resources": [

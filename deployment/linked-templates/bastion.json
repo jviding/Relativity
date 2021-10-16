@@ -9,7 +9,8 @@
         },
         "adminPassword": {
             "type": "securestring",
-            "defaultValue": "[newGuid()]"
+            "defaultValue": "[newGuid()]",
+            "minLength": 12
         },
         "vnet": {
             "type": "object"

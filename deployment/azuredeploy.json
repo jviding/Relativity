@@ -89,11 +89,11 @@
                     }
                 }
             }
-        }/*,
+        },
         {
             // Create storage account
-            // Create private endpoint: blob storage <-> subnetPrivateInternal
-            // Create private DNS record, publish to vnet
+            // - with private endpoint: blob storage <-> subnetPrivateInternal
+            // - with private DNS record in vnet
             "name": "storage",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -150,8 +150,8 @@
         },
         {
             // Create registry
-            // Create private endpoint: registry <-> subnetPrivateInternal
-            // Create private DNS record, publish to vnet
+            // - with private endpoint: registry <-> subnetPrivateInternal
+            // - with private DNS record in vnet
             "name": "registry",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -229,23 +229,13 @@
                     },
                     "blobUri": {
                         "type": "string"
-                    }
-                    /*
-                    "userAssignedIdentities": {
-                        "value": "[reference('identities').outputs.userAssignedIdentities.value]"
-                    },
-                    "appGw": {
-                        "value": "[reference('gateway').outputs.appGw.value]"
-                    },
-                    "subnetCluster": {
-                        "value": "[reference('networks').outputs.vnet.value.subnets.subnetPrivateCluster]"
                     },
                     "sshPubKey": {
                         "value": "[variables('sshPubKey')]"
                     }
                 }
             }
-        }*/
+        }
     ],
     "outputs": {}
 }
