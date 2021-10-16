@@ -38,7 +38,7 @@
         "deploymentGatewayID": "[resourceId('Microsoft.Resources/deployments','gateway')]"
     },
     "resources": [
-        /*{
+        {
             // Create user assigned identities
             "name": "identities",
             "type": "Microsoft.Resources/deployments",
@@ -49,7 +49,7 @@
                     "relativePath": "linked-templates/identities.json"
                 }
             }
-        },*/
+        },
         {
             // Create virtual network and subnets
             "name": "networks",
