@@ -38,7 +38,7 @@
         "deploymentGatewayID": "[resourceId('Microsoft.Resources/deployments','gateway')]"
     },
     "resources": [
-        {
+        /*{
             // Create user assigned identities
             "name": "identities",
             "type": "Microsoft.Resources/deployments",
@@ -49,7 +49,7 @@
                     "relativePath": "linked-templates/identities.json"
                 }
             }
-        },
+        },*/
         {
             // Create virtual network and subnets
             "name": "networks",
@@ -61,11 +61,11 @@
                     "relativePath": "linked-templates/networks.json"
                 }
             }
-        },
+        }/*,
         {
             // Create vault
-            // Create private endpoint: vault <-> subnetPrivateInternal
-            // Create private DNS record, publish to vnet
+            // - with private endpoint: vault <-> subnetPrivateInternal
+            // - with private DNS record in vnet
             "name": "vault",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",
@@ -221,6 +221,16 @@
                     "relativePath": "linked-templates/cluster.json"
                 },
                 "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('clusterVmAdminUsername')]"
+                    },
+                    "vnet": {
+                        "type": "object"
+                    },
+                    "blobUri": {
+                        "type": "string"
+                    }
+                    /*
                     "userAssignedIdentities": {
                         "value": "[reference('identities').outputs.userAssignedIdentities.value]"
                     },
@@ -235,7 +245,7 @@
                     }
                 }
             }
-        }
+        }*/
     ],
     "outputs": {}
 }
