@@ -61,7 +61,7 @@
                     "relativePath": "linked-templates/networks.json"
                 }
             }
-        }/*,
+        },
         {
             // Create vault
             // - with private endpoint: vault <-> subnetPrivateInternal
@@ -89,7 +89,7 @@
                     }
                 }
             }
-        },
+        }/*,
         {
             // Create storage account
             // Create private endpoint: blob storage <-> subnetPrivateInternal
