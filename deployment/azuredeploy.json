@@ -2,10 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountName": {
+        "bastionVmAdminUsername": {
             "type": "string"
         },
-        "bastionVmAdminUsername": {
+        "clusterVmAdminUsername": {
+            "type": "string"
+        },
+        "storageAccountName": {
             "type": "string"
         },
         "vaultName": {
@@ -198,8 +201,10 @@
             }
         },
         {
-            // Create managed cluster
-            // - with appGw as ingress
+            // Create virtual machine
+            // - with network interface
+            // - in subnetClusterInternal
+            // - store boot diagnostics to blob storage
             "name": "cluster",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2021-04-01",

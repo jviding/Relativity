@@ -2,17 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountName": {
-            "value": "storagejvidingtest"
-        },
         "bastionVmAdminUsername": {
-            "value": "jvidingtest"
+            "value": "jviding"
+        },
+        "clusterVmAdminUsername": {
+            "value": "jviding"
+        },
+        "storageAccountName": {
+            "value": "storagejviding"
         },
         "vaultName": {
-            "value": "vaultjvidingtest"
+            "value": "vaultjviding"
         },
         "registryName": {
-            "value": "registryjvidingtest"
+            "value": "registryjviding"
         }
     }
 }
