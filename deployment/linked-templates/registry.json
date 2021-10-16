@@ -14,6 +14,7 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "registryID": "[resourceId('Microsoft.ContainerRegistry/registries',parameters('registryName'))]",
+        "subnetID": "[parameters('vnet').subnets.subnetPrivateInternal.id]",
         "privateEndpointName": "registryPrivateEndpoint",
         "privateEndpointID": "[resourceId('Microsoft.Network/privateEndpoints',variables('privateEndpointName'))]",
         "privateDnsZoneName": "privatelink.azurecr.io",
@@ -66,7 +67,7 @@
             ],
             "properties": {
                 "subnet": {
-                    "id": "[parameters('vnet').subnets.subnetPrivateInternal.id]"
+                    "id": "[variables('subnetID')]"
                 },
                 "privateLinkServiceConnections": [
                     {
